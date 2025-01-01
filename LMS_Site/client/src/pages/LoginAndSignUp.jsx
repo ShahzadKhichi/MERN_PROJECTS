@@ -19,6 +19,7 @@ import {
 } from "@/services/api/authApi";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export function LoginAndSignUp() {
   const [signupinputs, setsignupinputs] = useState({
@@ -66,7 +67,7 @@ export function LoginAndSignUp() {
       });
     }
   }
-
+  const navigate = useNavigate();
   async function registerationHandler(type) {
     const inputData = type === "SignUp" ? signupinputs : loginInputs;
     const action = type === "SignUp" ? signupUser : loginUser;
@@ -82,27 +83,21 @@ export function LoginAndSignUp() {
       });
       toast.success("SignUp Successfull");
     } else if (signupIsError) {
-      toast.error(signupError.data.message);
+      toast.error(signupError.data?.message);
     } else if (loginIsSuccess && loginData) {
       setloginInputs({
         email: "",
         password: "",
       });
       toast.success(loginData.message);
+      navigate("/");
     } else if (loginIsError) {
-      toast.error(loginError.message);
+      toast.error(loginError.data?.message);
     }
-  }, [
-    signupError,
-    signupIsSuccess,
-    signupIsError,
-    loginIsError,
-    loginIsSuccess,
-    loginError,
-  ]);
+  }, [signupError, signupIsSuccess, loginIsSuccess, loginError]);
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex mt-20 justify-center h-screen">
       <Tabs defaultValue="SignUp" className="w-[400px] ">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="SignUp">SignUp</TabsTrigger>
@@ -148,7 +143,7 @@ export function LoginAndSignUp() {
                   id="Password"
                   name="password"
                   type="password"
-                  signupinputs={signupinputs.password}
+                  value={signupinputs.password}
                   placeholder="Password"
                   required={true}
                 />

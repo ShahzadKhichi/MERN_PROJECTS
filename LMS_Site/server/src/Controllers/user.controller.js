@@ -65,6 +65,7 @@ async function login(req,res)
                 success:false,
                 message:"invalid Email or Password"
             })
+            return;
         }
         
         if(!await bcrypt.compare(password,findUser.password))
@@ -73,10 +74,12 @@ async function login(req,res)
                 success:false,
                 message:"invalid Email or Password"
             })
+            return;
         }
 
 
         genrateToken(res,findUser,"WelCome Back to E-Learning")
+        return;
         
         
     } catch (error) {
