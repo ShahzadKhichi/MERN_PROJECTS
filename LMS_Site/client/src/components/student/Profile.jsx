@@ -12,12 +12,25 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+
 import { Loader2 } from "lucide-react";
 import Course from "./Course";
+import { useLoadUserQuery } from "@/services/api/authApi";
+import { useState, useEffect } from "react";
 
 export const Profile = () => {
-  const isLoading = 0;
-  const enrolledCourses = [1, 2, 3, 4];
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+  const { data, isLoading } = useLoadUserQuery();
+
+  useEffect(() => {
+    setEnrolledCourses([1, 2]);
+  }, [data]);
+
+  if (isLoading) {
+    return <p>Loading ...</p>;
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 my-24">
       <h1 className="font-bold text-2xl text-center md:text-left">Profile</h1>
@@ -27,7 +40,7 @@ export const Profile = () => {
           <Avatar>
             <AvatarImage
               className="h-24 w-24 md:h-32 md:w-32 mb-4 rounded-full"
-              src="https://github.com/shadcn.png"
+              src={data?.user?.photoUrl || "https://github.com/shadcn.png"}
               alt="@shadcn"
             />
             <AvatarFallback>CN</AvatarFallback>
@@ -38,7 +51,7 @@ export const Profile = () => {
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Name:
               <span className="font-normal text-gray-700  dark:text-gray-300 ml-2">
-                Shahzad
+                {data?.user?.name || NaN}
               </span>
             </h1>
           </div>
@@ -46,7 +59,7 @@ export const Profile = () => {
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Email:
               <span className="font-normal text-gray-700  dark:text-gray-300 ml-2">
-                Shahzad@gmail.com
+                {data?.user?.email || NaN}
               </span>
             </h1>
           </div>
@@ -54,7 +67,7 @@ export const Profile = () => {
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Role:
               <span className="font-normal text-gray-700  dark:text-gray-300 ml-2">
-                Instructor
+                {data?.user?.role.toUpperCase() || NaN}
               </span>
             </h1>
           </div>
@@ -113,7 +126,9 @@ export const Profile = () => {
           {enrolledCourses.length == 0 ? (
             <h1>You haven't enrolled yet</h1>
           ) : (
-            enrolledCourses.map((course) => <Course />)
+            enrolledCourses.map((course) => (
+              <Course course={course} index={course?._id} />
+            ))
           )}
         </div>
       </div>
