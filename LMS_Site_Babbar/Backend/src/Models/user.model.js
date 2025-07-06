@@ -1,0 +1,75 @@
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config({});
+
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    accountType: {
+      type: String,
+      required: true,
+      enum: ["Admin", "Instructor", "Student"],
+    },
+
+    additionalDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      requried: true,
+      ref: "Profile",
+    },
+    courses: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+    },
+    image: {
+      types: String,
+      required: true,
+    },
+    courseProgress: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "CourseProgress" },
+    ],
+  },
+  { timestamps: true }
+);
+
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.genrateToken = function () {
+  const token = jwt.sign(
+    {
+      id: this._id,
+      email: this.email,
+    },
+    process.env.JWT_SECRET
+  );
+  return token;
+};
+
+userSchema.methods.decodeToken = function (token) {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
