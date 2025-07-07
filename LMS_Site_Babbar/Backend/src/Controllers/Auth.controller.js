@@ -1,7 +1,7 @@
-const User = require("../Models/user.model");
+const User = require("../Models/User.model");
 const OTP = require("../Models/OTP.model");
 const otpGenerator = require("otp-generator");
-const { Profiler } = require("react");
+const Profile = require("../Models/Profile.model");
 
 exports.sendOTP = async (req, res) => {
   try {
@@ -30,7 +30,7 @@ exports.sendOTP = async (req, res) => {
     const otpPayLoad = { email, otp };
     const otpBody = await OTP.create(otpPayLoad);
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       messae: "OTP sent successfulyy",
     });
@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("-password");
 
     if (!user) {
       return res.status(401).json({
@@ -71,6 +71,7 @@ exports.login = async (req, res) => {
     }
 
     const token = user.generateToken();
+    user.token = token;
 
     res.cookies("token", token).status(200).json({
       message: "login successfull",
@@ -170,7 +171,7 @@ exports.signup = async (req, res) => {
       additionalDetails: profileDetails._id,
     });
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "User registered successfully",
       user,

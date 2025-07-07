@@ -36,7 +36,7 @@ const courseSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     thumnail: {
       types: String,
-      requried: true,
+      required: true,
     },
     tag: {
       tag: mongoose.Schema.Types.ObjectId,

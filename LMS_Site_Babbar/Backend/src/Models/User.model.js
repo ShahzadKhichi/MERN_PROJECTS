@@ -33,15 +33,17 @@ const userSchema = new mongoose.Schema(
 
     additionalDetails: {
       type: mongoose.Schema.Types.ObjectId,
-      requried: true,
+      required: true,
       ref: "Profile",
     },
     courses: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
     },
+    token: { type: String },
+    restTokenExpires: { type: Number },
     imageUrl: {
-      types: String,
+      type: String,
       required: true,
     },
     courseProgress: [
