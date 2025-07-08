@@ -1,14 +1,20 @@
 const Course = require("../Models/Course.model");
 const User = require("../Models/User.model");
-const Tag = require("../Models/Tag.model");
+const Category = require("../Models/Category.model");
 const uplaodImage = require("../utils/imageUploader");
 
 exports.createCourse = async (req, res) => {
   try {
     const userId = req.user._id;
     //geting data
-    const { courseName, courseDescription, whatYouWillLearn, price, tag } =
-      req.body;
+    const {
+      courseName,
+      courseDescription,
+      whatYouWillLearn,
+      price,
+      category,
+      tags,
+    } = req.body;
 
     const { thumbnail } = req.files;
 
@@ -18,8 +24,9 @@ exports.createCourse = async (req, res) => {
       !courseDescription ||
       !whatYouWillLearn ||
       !price ||
-      !tag ||
-      !thumbnail
+      !category ||
+      !thumbnail ||
+      !tags
     ) {
       return res.status(401).json({
         success: false,
@@ -36,11 +43,11 @@ exports.createCourse = async (req, res) => {
       });
     }
 
-    const tagDetails = await Tag.findOne({ name: tag });
-    if (!tagDetails) {
+    const categoryDetails = await Category.findOne({ name: category });
+    if (!categoryDetails) {
       return res.status(401).json({
         success: false,
-        message: "Invalid Tag Name",
+        message: "Invalid category Name",
       });
     }
 
@@ -58,7 +65,8 @@ exports.createCourse = async (req, res) => {
       instructor: instructor._id,
       price,
       whatYouWillLearn,
-      tag: tagDetails._id,
+      category: categoryDetails._id,
+      tags,
     });
 
     instructor = await instructor.updateOne(
