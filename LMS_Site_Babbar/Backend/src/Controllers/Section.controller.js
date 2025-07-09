@@ -4,6 +4,8 @@ const Course = require("../Models/Course.model");
 exports.createSection = async (req, res) => {
   try {
     const { sectionName, courseId } = req.body;
+
+    //remaining also validate for instructor that same instructor has created that course
     if (!sectionName || !courseId) {
       return res.status(401).json({
         success: false,

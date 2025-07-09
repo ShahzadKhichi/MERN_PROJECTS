@@ -111,3 +111,54 @@ exports.showAllCourses = async (req, res) => {
     });
   }
 };
+
+exports.getCourseDetails = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+
+    if (!courseId) {
+      return res.status(403).json({
+        success: false,
+        messsage: "all fields are required",
+      });
+    }
+
+    let course = await Course.findById(courseId);
+
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        messsage: "course not found",
+      });
+    }
+
+    course = course
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "additionalDetails",
+        },
+      })
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSections",
+        },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      message: "get detaials successfully",
+      courseDetails: course,
+    });
+  } catch (error) {
+    console.log("error in geting course details ", error);
+    return res.status(500).json({
+      success: false,
+      message: "internel server error",
+    });
+  }
+};

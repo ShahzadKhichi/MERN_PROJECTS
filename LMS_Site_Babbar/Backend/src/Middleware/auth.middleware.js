@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken");
+const User = require("../Models/User.model");
 require("dotenv").config({});
 
 exports.auth = async (req, res, next) => {
   try {
     const token =
       req.cookies.token ||
-      req.header("Authorization").split(" ")[0] ||
+      req.header("Authorization")?.split(" ")[0] ||
       req.body.token;
 
     if (!token) {
@@ -15,11 +16,12 @@ exports.auth = async (req, res, next) => {
       });
     }
 
-    const decode = User.decodeTokne(token);
+    const decode = User.decodeToken(token);
+
     if (!decode) {
       return res.status(401).json({
         sucess: false,
-        message: "Unauthorized access",
+        message: "Unauthorized access ",
       });
     }
     req.user = decode;

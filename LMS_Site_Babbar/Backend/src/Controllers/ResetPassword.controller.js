@@ -7,9 +7,8 @@ const bcrypt = require("bcrypt");
 
 exports.changePassword = async (req, res) => {
   try {
-    const { token } = req.params;
-    const { oldPassword, newPassword, email } = req.body;
-    if (!token || !oldPassword || !newPassword) {
+    const { confirmPassword, newPassword, token } = req.body;
+    if (!token || !confirmPassword || !newPassword) {
       return res.status(401).json({
         success: false,
         message: "All fields are required",
@@ -31,16 +30,13 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    user = await user.updateOne(
-      {
-        password: newPassword,
-      },
-      { new: true }
-    );
-    await updatedUser.save();
+    user.password = newPassword;
+    user.save();
+
     return res.status(200).json({
       success: true,
       message: "password reset successfully",
+      user,
     });
   } catch (error) {
     console.log("Error occurs during chaning password ", error);
@@ -76,7 +72,6 @@ exports.resetPasswordTokenSender = async (req, res) => {
       },
       { new: true }
     );
-    user = user.save();
 
     const url = `http://localhost:4000/update-password/${token}`;
 
@@ -87,7 +82,7 @@ exports.resetPasswordTokenSender = async (req, res) => {
     );
 
     return res.status(200).json({
-      success: jtrue,
+      success: true,
       message: "Link sent successfully",
     });
   } catch (error) {

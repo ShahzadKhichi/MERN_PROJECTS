@@ -12,9 +12,8 @@ const categorySchema = new mongoose.Schema(
       trim: true,
     },
     course: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Course",
-      required: true,
     },
   },
   { timestamps: true }

@@ -49,3 +49,46 @@ exports.showAllCategories = async (req, res) => {
     });
   }
 };
+
+exports.categoryPageDetails = async (req, res) => {
+  try {
+    const { categoryId } = req.body;
+
+    if (!categoryId) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are requried",
+      });
+    }
+
+    const selectedCourses = await Category.findById(categoryId)
+      .populate("course")
+      .exec();
+
+    const differentCourses = await Category.findById({
+      _id: { $ne: categoryId },
+    })
+      .populate("course")
+      .exec();
+
+    if (!selectedCourses) {
+      return res.status(404).json({
+        success: false,
+        message: "category not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "detials get successfully",
+      selectedCourses,
+      differentCourses,
+    });
+  } catch (error) {
+    console.log("Error in category page details", error);
+    return res.status(500).json({
+      success: false,
+      message: "internel server error",
+    });
+  }
+};

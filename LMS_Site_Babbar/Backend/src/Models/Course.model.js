@@ -35,7 +35,7 @@ const courseSchema = new mongoose.Schema(
     ],
     price: { type: Number, required: true },
     thumnail: {
-      types: String,
+      type: String,
       required: true,
     },
     category: {
@@ -43,7 +43,7 @@ const courseSchema = new mongoose.Schema(
       ref: "Category",
     },
     tags: {
-      types: String,
+      type: [String],
     },
     studentsEnRolled: [
       {

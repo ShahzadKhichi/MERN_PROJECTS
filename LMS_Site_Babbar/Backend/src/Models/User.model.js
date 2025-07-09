@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config({});
+require("dotenv").config();
 
 const userSchema = new mongoose.Schema(
   {
@@ -62,7 +62,7 @@ userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.genrateToken = function () {
+userSchema.methods.generateToken = function () {
   const token = jwt.sign(
     {
       id: this._id,
@@ -73,7 +73,7 @@ userSchema.methods.genrateToken = function () {
   return token;
 };
 
-userSchema.methods.decodeToken = function (token) {
+userSchema.statics.decodeToken = function (token) {
   return jwt.verify(token, process.env.JWT_SECRET);
 };
 

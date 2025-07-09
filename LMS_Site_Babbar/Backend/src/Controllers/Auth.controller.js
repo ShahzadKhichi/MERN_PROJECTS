@@ -46,14 +46,14 @@ exports.sendOTP = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if ((!email, password)) {
+    if ((!email, !password)) {
       return res.status(401).json({
         message: "All fields are required",
         success: false,
       });
     }
 
-    const user = await User.findOne({ email }).select("-password");
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({
@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
     const token = user.generateToken();
     user.token = token;
 
-    res.cookies("token", token).status(200).json({
+    res.cookie("token", token).status(200).json({
       message: "login successfull",
       success: true,
       user,
@@ -107,7 +107,7 @@ exports.signup = async (req, res) => {
       !password ||
       !confirmPassword ||
       !accountType ||
-      otp
+      !otp
     ) {
       return res.status(401).json({
         success: false,
@@ -130,7 +130,7 @@ exports.signup = async (req, res) => {
     }
     //checking already register user
     const alreadyExistUser = await User.findOne({ email });
-    if (!alreadyExistUser) {
+    if (alreadyExistUser) {
       return res.status(401).json({
         success: false,
         message: "Please use a unique email id",
@@ -141,12 +141,12 @@ exports.signup = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(1);
 
-    if (!recentOTP || recentOTP?.length < 6) {
+    if (!recentOTP || recentOTP[0]?.otp?.length < 6) {
       return res.status(401).json({
         success: false,
         message: "Verification failed",
       });
-    } else if (recentOTP != otp) {
+    } else if (recentOTP[0].otp != otp) {
       return res.status(401).json({
         success: false,
         message: "Invalid OTP, verification failed",
@@ -154,7 +154,7 @@ exports.signup = async (req, res) => {
     }
 
     const imageUrl = `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`;
-    const profileDetails = await Profiler.create({
+    const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
       about: null,
