@@ -5,6 +5,8 @@ import HighlightText from "../Components/Core/HomePage/HighlightText";
 import CTAButton from "../Components/Core/HomePage/CTAButton";
 import bannerVideo from "../assets/Images/banner.mp4";
 import CodeBlocks from "../Components/Core/HomePage/CodeBlocks";
+import TimeLineSection from "../Components/Core/HomePage/TimeLineSection";
+import LearningLanguageSection from "../Components/Core/HomePage/LearningLanguageSection";
 const Home = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -83,7 +85,45 @@ const Home = () => {
         </div>
       </section>
       {/* section 2 */}
-      <section></section>
+      <section className="bg-pure-greys-5 text-richblack-700">
+        <div className="homepage_bg h-[310px]">
+          <div className="w-11/12 max-w-maxContent flex-col flex items-center justify-between gap-5 mx-auto">
+            <div className="h-[150px]"></div>
+            <div className="flex gap-7 flex-col md:flex-row text-white">
+              <CTAButton active={true} linkto={"/singup"}>
+                <div className="flex gap-2 items-center">
+                  Explore all catalog {<FaArrowRight />}
+                </div>
+              </CTAButton>
+              <CTAButton active={false} linkto={"/login"}>
+                Learn more
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-7">
+          <div className="flex gap-10 my-20">
+            <div className="w-[50%] text-4xl font-inter font-bold">
+              Get the skills you need for a{" "}
+              <HighlightText text={"job that is in demand"} />
+            </div>
+            <div className="w-[50%] flex flex-col gap-10 ">
+              <div className="text-[16px]">
+                The modern StudyNotion is the dictates its own terms. Today, to
+                be a competitive specialist requires more than professional
+                skills.
+              </div>
+              <div className="w-fit">
+                <CTAButton active={true} linkto={"/signup"}>
+                  Learn More
+                </CTAButton>
+              </div>
+            </div>
+          </div>
+          <TimeLineSection />
+          <LearningLanguageSection />
+        </div>
+      </section>
       {/* section 3 */}
       <section></section>
       {/* footer */}
