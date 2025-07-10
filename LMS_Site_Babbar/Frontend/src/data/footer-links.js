@@ -43,13 +43,52 @@ export const FooterLink2 = [
   {
     title: "Career building",
     links: [
-        {title: "Career paths", link: "/career-paths"},
-        {title: "Career services", link: "/career-services"},
-        {title: "Interview prep", link: "/interview-prep"},
-        {title: "Professional certification", link: "/professional-certification"},
-        {title: "-", link: "/hi"},
-        {title: "Full Catalog", link: "/full-catalog"},
-        {title: "Beta Content", link: "/beta-content"}
-    ]
-  }
+      { title: "Career paths", link: "/career-paths" },
+      { title: "Career services", link: "/career-services" },
+      { title: "Interview prep", link: "/interview-prep" },
+      {
+        title: "Professional certification",
+        link: "/professional-certification",
+      },
+      { title: "-", link: "/hi" },
+      { title: "Full Catalog", link: "/full-catalog" },
+      { title: "Beta Content", link: "/beta-content" },
+    ],
+  },
+];
+
+export const FooterLink1 = [
+  {
+    title: "Company",
+    links: [{ title: "About" }, { title: "Careers" }, { title: "Affllates" }],
+  },
+  {
+    title: "Resources",
+    links: [
+      { title: "Articles" },
+      { title: "Blog" },
+      { title: "Chart Sheet" },
+      { title: "Code challenges" },
+      { title: "Docs" },
+      { title: "Projects" },
+      { title: "Videos" },
+      { title: "Workspaces" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [{ title: "Help  Center" }],
+  },
+  {
+    title: "Plans",
+    links: [
+      { title: "Paid memberships" },
+      { title: "For students" },
+      { title: "Business solutions" },
+    ],
+  },
+  {
+    title: "Community",
+    links: [{ title: "Forums" }, { title: "Chapters" }, { title: "Events" }],
+  },
 ];

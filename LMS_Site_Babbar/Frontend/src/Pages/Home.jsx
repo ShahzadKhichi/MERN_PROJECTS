@@ -7,6 +7,8 @@ import bannerVideo from "../assets/Images/banner.mp4";
 import CodeBlocks from "../Components/Core/HomePage/CodeBlocks";
 import TimeLineSection from "../Components/Core/HomePage/TimeLineSection";
 import LearningLanguageSection from "../Components/Core/HomePage/LearningLanguageSection";
+import InstructorSection from "../Components/Core/HomePage/InstructorSection";
+import Footer from "../Components/Common/Footer";
 const Home = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -36,8 +38,8 @@ const Home = () => {
             </CTAButton>
             <CTAButton>Book a Demo</CTAButton>
           </div>
-          <div className="flex justify-center w-[75%]  shadow-2xl  shadow-blue-100 ">
-            <div className="mx-0 my-0 w-[100%] bg-white  rounded-md">
+          <div className=" w-[75%]   drop-shadow-2xl shadow-2xl  shadow-blue-100  ">
+            <div className=" w-[100%] bg-white  rounded-md ">
               <video
                 src={bannerVideo}
                 muted
@@ -125,9 +127,19 @@ const Home = () => {
         </div>
       </section>
       {/* section 3 */}
-      <section></section>
+      <section className="w-11/12 mx-auto max-w-maxContent flex flex-col justify-between gap-10 bg-richblack-900 text-white">
+        <InstructorSection />
+        <h2 className="text-center  text-4xl font-semibold mt-10">
+          Review from other learners
+        </h2>
+        <div className="h-[40vh]"></div>
+        {/* review slider */}
+      </section>
       {/* footer */}
-      <footer></footer>
+
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };
