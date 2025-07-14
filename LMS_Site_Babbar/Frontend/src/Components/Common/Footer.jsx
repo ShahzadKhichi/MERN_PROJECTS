@@ -8,9 +8,9 @@ import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="flex justify-center items-center it w-full  h-[90vh] bg-richblack-800 pt-10">
+    <div className="flex lg:flex-row flex-col justify-center items-center it w-full  bg-richblack-800 pt-10">
       <div className="flex flex-col h-[100%]  w-[70%]">
-        <div className="h-[90%] flex mb-4  ">
+        <div className="h-[90%] flex mb-4  lg:flex-row flex-col lg:gap-0 gap-10 ">
           <div className="w-[50%] flex gap-10 -translate-y-4">
             <div className="flex flex-col gap-2">
               <div>{<img src={Logo} />}</div>
@@ -81,7 +81,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="w-[1px] h-full bg-richblack-700"></div>
+          <div className="lg:w-[1px] w-full h-[2px] lg:h-auto bg-richblack-700"></div>
           <div className="w-[50%] flex gap-20 pl-8">
             {FooterLink2.map((item, id) => (
               <div className="flex flex-col gap-3 -translate-y-2 pb-6" key={id}>

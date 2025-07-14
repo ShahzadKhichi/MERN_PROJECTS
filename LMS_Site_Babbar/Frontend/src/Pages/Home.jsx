@@ -9,6 +9,7 @@ import TimeLineSection from "../Components/Core/HomePage/TimeLineSection";
 import LearningLanguageSection from "../Components/Core/HomePage/LearningLanguageSection";
 import InstructorSection from "../Components/Core/HomePage/InstructorSection";
 import Footer from "../Components/Common/Footer";
+import ExploreMore from "../Components/Core/HomePage/ExploreMore";
 const Home = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -84,6 +85,7 @@ const Home = () => {
             bgGradient={<div className="codeblock2 absolute "></div>}
             codeblock={`<!DOCTYPE html>\n<html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav><a href="/one">One</a>\n</nav>\n</body>`}
           ></CodeBlocks>
+          <ExploreMore />
         </div>
       </section>
       {/* section 2 */}
