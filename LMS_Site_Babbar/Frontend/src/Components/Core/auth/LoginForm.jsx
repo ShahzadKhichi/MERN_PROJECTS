@@ -4,19 +4,27 @@ import Input from "../../Common/Input";
 import InputPassword from "../../Common/InputPassword";
 import { toast } from "react-hot-toast";
 import HighlightText from "../HomePage/HighlightText";
+import { login } from "../../../services/APIS/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!data.password || !data.email) {
       toast.error("All fileds are required");
+      return;
     }
+
+    await login(data, navigate, dispatch);
   };
 
   return (

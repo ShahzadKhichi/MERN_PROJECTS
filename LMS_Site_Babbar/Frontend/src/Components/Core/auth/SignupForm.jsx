@@ -4,8 +4,13 @@ import Input from "../../Common/Input";
 import InputPassword from "../../Common/InputPassword";
 import { toast } from "react-hot-toast";
 import HighlightText from "../HomePage/HighlightText";
+import { sendOTP } from "../../../services/APIS/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const SignupForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [role, setRole] = useState("Student");
   const [data, setData] = useState({
     firstname: "",
@@ -16,7 +21,7 @@ const SignupForm = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -29,6 +34,8 @@ const SignupForm = () => {
     ) {
       toast.error("All fileds are required");
     }
+
+    await sendOTP(data, navigate, dispatch);
   };
 
   const toggleRole = (e, role) => {

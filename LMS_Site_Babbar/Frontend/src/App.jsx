@@ -5,6 +5,7 @@ import Navbar from "./Components/Common/Navbar";
 
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import Error from "./Pages/Error";
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );

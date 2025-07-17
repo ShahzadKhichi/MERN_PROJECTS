@@ -1,9 +1,4 @@
 import frame from "../../../assets/Images/frame.png";
-import CTAButton from "../HomePage/CTAButton";
-import Input from "../../Common/Input";
-import InputPassword from "../../Common/InputPassword";
-
-import HighlightText from "../HomePage/HighlightText";
 
 const Template = ({ image, Form }) => {
   return (
