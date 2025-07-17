@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const InputPassword = ({ onChange, placeholder, label, value }) => {
+const InputPassword = ({ onChange, placeholder, label, value, required }) => {
   const [visible, setVisible] = useState(false);
   const onIconClick = () => {
     setVisible(!visible);
@@ -16,6 +16,7 @@ const InputPassword = ({ onChange, placeholder, label, value }) => {
           onChange={onChange}
           placeholder={placeholder}
           label={label}
+          required={required}
         />
       </div>
       <div

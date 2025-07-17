@@ -4,14 +4,19 @@ import { setLoading, setSignupData, setToken } from "../../slices/auth.slice";
 import { setUser } from "../../../../Study-Notion-master/src/slices/profileSlice";
 import toast from "react-hot-toast";
 
-const { LOGIN_API, SIGNUP_API, SEND_OTP_API, SEND_PASSWORD_RESET_TOKEN_API } =
-  authEndpoints;
+const {
+  LOGIN_API,
+  SIGNUP_API,
+  SEND_OTP_API,
+  SEND_PASSWORD_RESET_TOKEN_API,
+  RESET_PASSWORD_API,
+} = authEndpoints;
 
 export const login = async (data, navigate, dispatch) => {
   dispatch(setLoading(true));
   try {
     if (!data) {
-      toast.warn("All fields are requried");
+      toast.error("All fields are requried");
     } else {
       const res = await apiConnector("POST", LOGIN_API, data);
       console.log(res.status);
@@ -31,7 +36,7 @@ export const login = async (data, navigate, dispatch) => {
   } catch (error) {
     console.log("failed to login");
 
-    toast.error("falied to login", error?.message);
+    toast.error(error?.response?.data?.message || "falied to login");
   }
   dispatch(setLoading(false));
 };
@@ -54,7 +59,7 @@ export const sendOTP = async (data, navigate, dispatch) => {
     }
   } catch (error) {
     console.log("error in sending otop", error);
-    toast.error("failed to send otp ");
+    toast.error(error?.response?.data?.message || "failed to send otp ");
   }
   toast.dismiss(toastId);
 };
@@ -70,7 +75,23 @@ export const sendResetToken = async (email, dispatch, setEmailSent) => {
       setEmailSent(true);
     }
   } catch (error) {
-    toast.error(error.message || "Failed to send email");
+    toast.error(error?.response?.data?.message || "Failed to send email");
+  }
+  dispatch(setLoading(false));
+};
+
+export const resetPassword = async (data, dispatch, navigate) => {
+  dispatch(setLoading(true));
+  try {
+    const res = await apiConnector("POST", RESET_PASSWORD_API, data);
+    if (res.status == 200 || res.status(201)) {
+      toast.success("Password reset successfull");
+      navigate("/login");
+    }
+  } catch (error) {
+    console.log();
+
+    toast.error(error?.response?.data?.message || "failed to reset passowrd");
   }
   dispatch(setLoading(false));
 };

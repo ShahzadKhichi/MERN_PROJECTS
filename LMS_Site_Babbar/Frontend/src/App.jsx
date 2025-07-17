@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import OpenRoute from "./Components/Core/auth/OpenRoute";
 import { useEffect, useState } from "react";
+import UpdatePassword from "./Pages/UpdatePassword";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
@@ -23,7 +24,6 @@ function App() {
       toast.dismiss(toastId);
       setToastId(null);
     }
-    console.log(toastId);
   }, [loading]);
   return (
     <div className="bg-richblack-900">
@@ -57,6 +57,14 @@ function App() {
             element={
               <OpenRoute>
                 <ForgetPassword />
+              </OpenRoute>
+            }
+          />
+          <Route
+            path="/update-password/:token"
+            element={
+              <OpenRoute>
+                <UpdatePassword />
               </OpenRoute>
             }
           />

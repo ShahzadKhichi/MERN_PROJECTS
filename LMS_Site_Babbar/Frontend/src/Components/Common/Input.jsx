@@ -1,7 +1,7 @@
 const Input = ({ type, placeholder, onChange, label, value, required }) => {
   return (
     <div className="flex flex-col">
-      <div className="text-white font-semibold pl-1">
+      <div className="text-white font-semibold pl-1 pb-1">
         {label}
         {required ? <span className="text-[#b11616]"> *</span> : ""}
       </div>
