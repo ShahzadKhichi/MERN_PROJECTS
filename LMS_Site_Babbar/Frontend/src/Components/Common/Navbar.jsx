@@ -12,8 +12,8 @@ import { categories } from "../../services/apis";
 import { RiArrowDownWideLine } from "react-icons/ri";
 
 const Navbar = () => {
-  const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
+  // const { token } = useSelector((state) => state.auth);
+  // const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
 
   const [subLinks, setSubLinks] = useState([]);
@@ -25,7 +25,7 @@ const Navbar = () => {
 
       setSubLinks(res.data.Categories);
     } catch (error) {
-      console.log("errro in fetching data of sublinks");
+      console.log("errro in fetching data of sublinks", error);
     }
   };
 
@@ -45,7 +45,7 @@ const Navbar = () => {
   }, [location.pathname]);
   return (
     <nav className="w-full border-richblack-500 border-b-[1px]  ">
-      <div className="w-11/12 flex max-w-maxContent items-center justify-between h-16 bg-richblack-900 mx-auto">
+      <div className="w-11/12 flex max-w-maxContent items-center justify-between h-16  bg-richblack-900 mx-auto">
         <Link to={"/"}>
           <img src={logo} alt="" />
         </Link>
@@ -53,16 +53,18 @@ const Navbar = () => {
           {NavbarLinks.map((link, id) => (
             <li key={id} className="relative">
               {link.title == "Catalog" ? (
-                <div className="">
-                  <p className="flex gap-2 items-center">
+                <div className="  relative flex ">
+                  <div className="flex gap-2 items-center">
                     {link.title}
-                    <RiArrowDownWideLine />
-                  </p>
-                  <div className="absolute w-[18vw]  mt-2 -left-[88%] rounded-lg bg-richblack-50 z-10  p-4 flex flex-col gap-5 text-black">
-                    <div className="bg-richblack-50 w-6 h-6  right-[45%] -top-2 rotate-45 t  rounded absolute"></div>
-                    {subLinks.map((link) => (
-                      <Link>{link?.name}</Link>
-                    ))}
+                    <div className="group">
+                      <RiArrowDownWideLine></RiArrowDownWideLine>
+                      <div className="absolute w-[18vw]  duration-200 mt-2 -left-[86%] rounded-lg bg-richblack-50 z-10  p-4 flex flex-col gap-5 group-hover:visible text-black group-hover:opacity-100 opacity-0">
+                        <div className="bg-richblack-50 w-6 h-6  right-[45%] -top-2 rotate-45 t  rounded absolute"></div>
+                        {subLinks.map((link, id) => (
+                          <Link key={id}>{link?.name}</Link>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : (

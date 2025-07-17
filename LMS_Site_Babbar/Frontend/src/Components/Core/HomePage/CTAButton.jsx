@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const CTAButton = ({ children, active, linkto }) => {
+const CTAButton = ({ children, active, linkto, onClick }) => {
   return (
-    <Link to={linkto}>
+    <Link to={linkto} onClick={onClick}>
       <div
         className={`text-center px-6 py-3 lg:text-[15px] text-[10px] rounded-md font-bold  ${
           active ? "bg-yellow-50 text-black " : "bg-richblack-800"

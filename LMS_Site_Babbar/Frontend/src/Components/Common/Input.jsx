@@ -1,0 +1,18 @@
+import React from "react";
+
+const Input = ({ type, placeholder, onChange, label, value }) => {
+  return (
+    <div className="flex flex-col">
+      <div className="text-white font-semibold">{label}</div>
+      <input
+        value={value}
+        type={type}
+        placeholder={placeholder}
+        onChange={onChange}
+        className="w-full bg-richblack-600 font-semibold px-2 py-4 border-b-2 border-richblack-400 rounded-lg placeholder:text-richblack-200 text-richblack-5"
+      />
+    </div>
+  );
+};
+
+export default Input;
