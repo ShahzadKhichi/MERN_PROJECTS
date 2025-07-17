@@ -7,5 +7,6 @@ export const categories = {
 export const authEndpoints = {
   LOGIN_API: BASE_URL + "/user/login",
   SIGNUP_API: BASE_URL + "/user/signup",
-  SENDOTP_API: BASE_URL + "/user/otp",
+  SEND_OTP_API: BASE_URL + "/user/otp",
+  SEND_PASSWORD_RESET_TOKEN_API: BASE_URL + "/user/send-token",
 };

@@ -1,9 +1,10 @@
-import React from "react";
-
-const Input = ({ type, placeholder, onChange, label, value }) => {
+const Input = ({ type, placeholder, onChange, label, value, required }) => {
   return (
     <div className="flex flex-col">
-      <div className="text-white font-semibold">{label}</div>
+      <div className="text-white font-semibold pl-1">
+        {label}
+        {required ? <span className="text-[#b11616]"> *</span> : ""}
+      </div>
       <input
         value={value}
         type={type}

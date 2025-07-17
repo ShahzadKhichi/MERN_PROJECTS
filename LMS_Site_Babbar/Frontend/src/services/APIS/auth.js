@@ -1,20 +1,17 @@
 import { authEndpoints } from "../apis";
 import { apiConnector } from "../apiConnector";
-import { toast } from "react-hot-toast";
-import {
-  setSignupData,
-  setToken,
-} from "../../../../Study-Notion-master/src/slices/authSlice";
+import { setLoading, setSignupData, setToken } from "../../slices/auth.slice";
 import { setUser } from "../../../../Study-Notion-master/src/slices/profileSlice";
+import toast from "react-hot-toast";
 
-const { LOGIN_API, SIGNUP_API, SENDOTP_API } = authEndpoints;
+const { LOGIN_API, SIGNUP_API, SEND_OTP_API, SEND_PASSWORD_RESET_TOKEN_API } =
+  authEndpoints;
 
 export const login = async (data, navigate, dispatch) => {
-  const toastId = toast.loading("loading...");
+  dispatch(setLoading(true));
   try {
     if (!data) {
-      toast.console.warn();
-      ("All fields are requried");
+      toast.warn("All fields are requried");
     } else {
       const res = await apiConnector("POST", LOGIN_API, data);
       console.log(res.status);
@@ -36,7 +33,7 @@ export const login = async (data, navigate, dispatch) => {
 
     toast.error("falied to login", error?.message);
   }
-  toast.dismiss(toastId);
+  dispatch(setLoading(false));
 };
 
 export const sendOTP = async (data, navigate, dispatch) => {
@@ -45,7 +42,7 @@ export const sendOTP = async (data, navigate, dispatch) => {
     if (!data.email) {
       toast.warn("all fields are required");
     } else {
-      const res = await apiConnector("POST", SENDOTP_API, {
+      const res = await apiConnector("POST", SEND_OTP_API, {
         email: data?.email,
       });
 
@@ -60,4 +57,20 @@ export const sendOTP = async (data, navigate, dispatch) => {
     toast.error("failed to send otp ");
   }
   toast.dismiss(toastId);
+};
+
+export const sendResetToken = async (email, dispatch, setEmailSent) => {
+  dispatch(setLoading(true));
+  try {
+    const res = await apiConnector("POST", SEND_PASSWORD_RESET_TOKEN_API, {
+      email,
+    });
+    if (res.status == 200 || res.status === 201) {
+      toast.success("Email sent");
+      setEmailSent(true);
+    }
+  } catch (error) {
+    toast.error(error.message || "Failed to send email");
+  }
+  dispatch(setLoading(false));
 };

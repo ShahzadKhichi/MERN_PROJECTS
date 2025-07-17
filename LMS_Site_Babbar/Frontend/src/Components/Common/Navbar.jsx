@@ -83,7 +83,7 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
-        <div className="flex text-richblack-25 gap-4 text-xl m-2">
+        <div className="flex text-richblack-25 gap-4 text-xl m-2 items-center">
           {token ? (
             user?.accountType == "Student" ? (
               <>
@@ -114,8 +114,12 @@ const Navbar = () => {
                 <div className="hover:scale-110 duration-200">
                   <FiSearch />
                 </div>
-                <div className="hover:scale-110 duration-200">
-                  <FaUser />
+                <div className="hover:scale-110 duration-200 ">
+                  <img
+                    src={user.imageUrl}
+                    alt=""
+                    className=" w-10 h-10 rounded-full"
+                  />
                 </div>
               </>
             )

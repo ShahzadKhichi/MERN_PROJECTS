@@ -57,7 +57,13 @@ const LoginForm = () => {
                 placeholder={"Enter password"}
                 label={"Password"}
               />
-              <button className="text-blue-100 absolute bottom-0 right-0">
+              <button
+                className="text-blue-100 absolute bottom-0 right-0"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/forget-password");
+                }}
+              >
                 Forget Password
               </button>
             </div>
