@@ -13,13 +13,15 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState("Student");
   const [data, setData] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    role: "Student",
+    accountType: "Student",
     password: "",
     confirmPassword: "",
   });
+
+  console.log(data);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,9 +30,9 @@ const SignupForm = () => {
       !data.confirmPassword ||
       !data.password ||
       !data.email ||
-      !data.role ||
-      !data.firstname ||
-      !data.lastname
+      !data.accountType ||
+      !data.firstName ||
+      !data.lastName
     ) {
       toast.error("All fileds are required");
     }
@@ -38,10 +40,10 @@ const SignupForm = () => {
     await sendOTP(data, navigate, dispatch);
   };
 
-  const toggleRole = (e, role) => {
+  const toggleRole = (e, accountType) => {
     e.preventDefault();
-    setData({ ...data, role: role });
-    setRole(role);
+    setData({ ...data, accountType });
+    setRole(accountType);
   };
 
   return (
@@ -77,14 +79,14 @@ const SignupForm = () => {
                 Instructor
               </button>
             </div>
-            {/* firstname lastname handler */}
+            {/* firstName lastName handler */}
             <div className="flex gap-4">
               <div className="w-full">
                 <Input
                   onChange={(e) =>
-                    setData({ ...data, firstname: e.target.value })
+                    setData({ ...data, firstName: e.target.value })
                   }
-                  value={data.firstname}
+                  value={data.firstName}
                   type={"text"}
                   placeholder={"Enter first name"}
                   label={"First Name"}
@@ -93,9 +95,9 @@ const SignupForm = () => {
               <div className="w-full">
                 <Input
                   onChange={(e) =>
-                    setData({ ...data, lastname: e.target.value })
+                    setData({ ...data, lastName: e.target.value })
                   }
-                  value={data.lastname}
+                  value={data.lastName}
                   type={"text"}
                   placeholder={"Enter last name"}
                   label={"Last Name"}

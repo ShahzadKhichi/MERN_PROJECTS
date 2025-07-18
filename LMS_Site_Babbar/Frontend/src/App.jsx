@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 import OpenRoute from "./Components/Core/auth/OpenRoute";
 import { useEffect, useState } from "react";
 import UpdatePassword from "./Pages/UpdatePassword";
+import VerifyEmail from "./Pages/VerifyEmail";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
@@ -26,7 +27,7 @@ function App() {
     }
   }, [loading]);
   return (
-    <div className="bg-richblack-900">
+    <div className="bg-richblack-900 ">
       <div
         className={` bg-richblack-900 ${
           loading ? "opacity-50 pointer-events-none" : ""
@@ -41,6 +42,14 @@ function App() {
             element={
               <OpenRoute>
                 <Login />
+              </OpenRoute>
+            }
+          />
+          <Route
+            path="/otp"
+            element={
+              <OpenRoute>
+                <VerifyEmail />
               </OpenRoute>
             }
           />
@@ -68,6 +77,7 @@ function App() {
               </OpenRoute>
             }
           />
+
           <Route path="*" element={<Error />} />
         </Routes>
       </div>

@@ -2,7 +2,7 @@ import frame from "../../../assets/Images/frame.png";
 
 const Template = ({ image, Form }) => {
   return (
-    <div className="flex w-full justify-center items-center  h-[90vh] mt-10">
+    <div className="flex w-full justify-center items-center  h-[90vh] mt-10 ">
       <div className="w-11/12  h-[80vh] flex justify-center  max-w-maxContent">
         <div className="w-[50%] h-[100%]  flex flex-col gap-5">{Form()}</div>
         <div className="w-[50%] h-[100%] relative">

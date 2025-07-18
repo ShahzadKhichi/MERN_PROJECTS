@@ -10,6 +10,7 @@ import { FaCartArrowDown } from "react-icons/fa";
 import { apiConnector } from "../../services/apiConnector";
 import { categories } from "../../services/apis";
 import { RiArrowDownWideLine } from "react-icons/ri";
+import ProfileDropDown from "../Core/auth/ProfileDropDown";
 
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
@@ -85,11 +86,11 @@ const Navbar = () => {
         </ul>
         <div className="flex text-richblack-25 gap-4 text-xl m-2 items-center">
           {token ? (
-            user?.accountType == "Student" ? (
-              <>
-                <div className="hover:scale-110 duration-200">
-                  <FiSearch />
-                </div>
+            <>
+              <div className="hover:scale-110 duration-200 ">
+                <FiSearch className="font-bold text-3xl" />
+              </div>
+              {user?.accountType == "Student" && (
                 <Link
                   to={"/dashboard/cart"}
                   className="relative hover:scale-110 duration-200"
@@ -105,24 +106,9 @@ const Navbar = () => {
                   )}
                   <FaCartArrowDown />
                 </Link>
-                <div className="hover:scale-110 duration-200">
-                  <FaUser />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="hover:scale-110 duration-200 ">
-                  <FiSearch className="font-bold text-3xl" />
-                </div>
-                <div className="hover:scale-110 duration-200 ">
-                  <img
-                    src={user.imageUrl}
-                    alt=""
-                    className=" w-10 h-10 rounded-full"
-                  />
-                </div>
-              </>
-            )
+              )}
+              <ProfileDropDown user={user} token={token} />
+            </>
           ) : (
             <>
               <CTAButton linkto={"/login"}>Login</CTAButton>

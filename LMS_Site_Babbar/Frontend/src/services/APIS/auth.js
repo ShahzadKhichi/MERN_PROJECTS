@@ -10,6 +10,7 @@ const {
   SEND_OTP_API,
   SEND_PASSWORD_RESET_TOKEN_API,
   RESET_PASSWORD_API,
+  LOGOUT_API,
 } = authEndpoints;
 
 export const login = async (data, navigate, dispatch) => {
@@ -24,11 +25,11 @@ export const login = async (data, navigate, dispatch) => {
         toast.success("login succesfull");
         const data = res.data;
 
-        dispatch(setToken(data.user.token));
+        dispatch(setToken(data.token));
         dispatch(setUser(data.user));
 
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", JSON.stringify(data.user.token));
+        localStorage.setItem("token", JSON.stringify(data.token));
 
         navigate("/");
       }
@@ -42,10 +43,10 @@ export const login = async (data, navigate, dispatch) => {
 };
 
 export const sendOTP = async (data, navigate, dispatch) => {
-  const toastId = toast.loading("loading...");
+  dispatch(setLoading(true));
   try {
     if (!data.email) {
-      toast.warn("all fields are required");
+      toast.error("all fields are required");
     } else {
       const res = await apiConnector("POST", SEND_OTP_API, {
         email: data?.email,
@@ -54,14 +55,32 @@ export const sendOTP = async (data, navigate, dispatch) => {
       if (res.status == 200 || res.status == 201) {
         dispatch(setSignupData(data));
         toast.success("OTP sent successfully");
-        navigate("/auth/otp");
+        navigate("/otp");
       }
     }
   } catch (error) {
     console.log("error in sending otop", error);
     toast.error(error?.response?.data?.message || "failed to send otp ");
   }
-  toast.dismiss(toastId);
+  dispatch(setLoading(false));
+};
+
+export const signup = async (data, navigate, dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const res = await apiConnector("POST", SIGNUP_API, data);
+    if (res.status == 201 || res.status == 200) {
+      dispatch(setUser(res.data.user));
+      dispatch(setToken(res.data.token));
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("token", JSON.stringify(res.data.token));
+      toast.success("Signup successfull");
+      navigate("/");
+    }
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "failed to verify email");
+  }
+  dispatch(setLoading(false));
 };
 
 export const sendResetToken = async (email, dispatch, setEmailSent) => {
@@ -92,6 +111,32 @@ export const resetPassword = async (data, dispatch, navigate) => {
     console.log();
 
     toast.error(error?.response?.data?.message || "failed to reset passowrd");
+  }
+  dispatch(setLoading(false));
+};
+
+export const logout = async (dispatch, navigate, token) => {
+  dispatch(setLoading(true));
+  try {
+    const res = await apiConnector(
+      "POST",
+      LOGOUT_API,
+      {},
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (res.status === 200 || res.status(201)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      dispatch(setUser(null));
+      dispatch(setToken(null));
+      toast.success("Logout successfull");
+      navigate("/");
+    }
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "failed to logout");
   }
   dispatch(setLoading(false));
 };
