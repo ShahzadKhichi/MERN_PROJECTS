@@ -71,12 +71,13 @@ exports.login = async (req, res) => {
     }
 
     const token = user.generateToken();
-    user.token = token;
 
-    res.cookie("token", token).status(200).json({
+    res.cookie("token", token);
+    res.status(200).json({
       message: "login successfull",
       success: true,
       user,
+      token,
     });
   } catch (error) {
     console.log("Error Occurs during login", error);
@@ -92,7 +93,6 @@ exports.signup = async (req, res) => {
       firstName,
       lastName,
       email,
-      contactNumber,
       password,
       confirmPassword,
       accountType,
@@ -103,7 +103,6 @@ exports.signup = async (req, res) => {
       !email ||
       !firstName ||
       !lastName ||
-      !contactNumber ||
       !password ||
       !confirmPassword ||
       !accountType ||
@@ -158,28 +157,48 @@ exports.signup = async (req, res) => {
       gender: null,
       dateOfBirth: null,
       about: null,
-      contactNumber,
     });
     const user = await User.create({
       firstName,
       lastName,
       email,
-      contactNumber,
       password,
       accountType,
       imageUrl,
       additionalDetails: profileDetails._id,
     });
 
+    const token = user.generateToken();
+
+    res.cookie("token", token);
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
       user,
+      token,
     });
   } catch (error) {
     console.log("Error occurs during sign in ", error);
     return res.status(500).json({
       message: "Internal server error",
+    });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    return res.status(200).json({
+      success: true,
+      message: "logout  successfull",
+    });
+  } catch (error) {
+    console.log("error in loging out", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "failed to logout",
     });
   }
 };

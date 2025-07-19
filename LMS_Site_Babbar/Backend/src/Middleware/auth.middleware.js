@@ -6,7 +6,7 @@ exports.auth = async (req, res, next) => {
   try {
     const token =
       req.cookies.token ||
-      req.header("Authorization")?.split(" ")[0] ||
+      req.header("Authorization")?.split(" ")[1] ||
       req.body.token;
 
     if (!token) {

@@ -1,6 +1,11 @@
 const router = require("express").Router();
 
-const { sendOTP, login, signup } = require("../Controllers/Auth.controller");
+const {
+  sendOTP,
+  login,
+  signup,
+  logout,
+} = require("../Controllers/Auth.controller");
 const {
   resetPasswordTokenSender,
   changePassword,
@@ -11,9 +16,10 @@ const { auth } = require("../Middleware/auth.middleware");
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/otp", sendOTP);
+router.post("/logout", auth, logout);
 
 // reset password
-router.post("/send-token", auth, resetPasswordTokenSender);
+router.post("/send-token", resetPasswordTokenSender);
 router.post("/reset-password", changePassword);
 
 module.exports = router;

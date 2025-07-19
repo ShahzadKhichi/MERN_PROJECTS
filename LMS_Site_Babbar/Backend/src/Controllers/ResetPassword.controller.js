@@ -7,8 +7,8 @@ const bcrypt = require("bcrypt");
 
 exports.changePassword = async (req, res) => {
   try {
-    const { confirmPassword, newPassword, token } = req.body;
-    if (!token || !confirmPassword || !newPassword) {
+    const { confirmPassword, password, token } = req.body;
+    if (!token || !confirmPassword || !password) {
       return res.status(401).json({
         success: false,
         message: "All fields are required",
@@ -30,7 +30,7 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    user.password = newPassword;
+    user.password = password;
     user.save();
 
     return res.status(200).json({
@@ -73,7 +73,7 @@ exports.resetPasswordTokenSender = async (req, res) => {
       { new: true }
     );
 
-    const url = `http://localhost:4000/update-password/${token}`;
+    const url = `http://localhost:5000/update-password/${token}`;
 
     await mailSender(
       email,
