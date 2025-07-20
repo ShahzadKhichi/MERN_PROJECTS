@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { AiOutlineCaretDown } from "react-icons/ai";
+import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
 import { logout } from "../../../services/APIS/auth";
@@ -24,11 +24,17 @@ const ProfileDropDown = ({ user, token }) => {
           alt={`profile-${user?.firstName}`}
           className="aspect-square w-[30px] rounded-full object-cover"
         />
-        <AiOutlineCaretDown className="text-sm text-richblack-100" />
+        {open ? (
+          <AiOutlineCaretUp className="text-sm text-richblack-100" />
+        ) : (
+          <AiOutlineCaretDown className="text-sm text-richblack-100" />
+        )}
       </div>
 
       <div
-        className={`z-50 absolute right-0 top-10 h-fit   pl-1 pr-8 py-1 duration-100 ease-in text-white bg-richblack-800 border-2 rounded-md border-richblack-200  flex flex-col gap-2  ${
+        className={`z-50 absolute  ${
+          open ? "-right-20" : "-right-72"
+        } top-14 h-fit   pl-1 pr-8 py-1 duration-100 ease-in text-white bg-richblack-800 border-2 rounded-md border-richblack-200  flex flex-col gap-2  ${
           open ? "opacity-100" : "opacity-0"
         } `}
       >

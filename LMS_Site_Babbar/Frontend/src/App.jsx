@@ -13,6 +13,7 @@ import OpenRoute from "./Components/Core/auth/OpenRoute";
 import { useEffect, useState } from "react";
 import UpdatePassword from "./Pages/UpdatePassword";
 import VerifyEmail from "./Pages/VerifyEmail";
+import About from "./Pages/About";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
@@ -61,6 +62,7 @@ function App() {
               </OpenRoute>
             }
           />
+          <Route path="/about" element={<About />} />
           <Route
             path="/forget-password"
             element={
