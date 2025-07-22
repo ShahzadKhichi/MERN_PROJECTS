@@ -52,12 +52,12 @@ const Navbar = () => {
           {NavbarLinks.map((link, id) => (
             <li key={id} className="relative ">
               {link.title == "Catalog" ? (
-                <div className="  relative flex group ">
-                  <div className="flex gap-2 items-center  duration-200">
+                <div className="  relative flex  ">
+                  <div className="flex gap-2 relative group  items-center  duration-200">
                     {link.title}
-                    <RiArrowDownWideLine className="relative"></RiArrowDownWideLine>
-                    <div>
-                      <div className="absolute group w-[18vw] -left-[79%] top-6 duration-200 mt-2  rounded-lg bg-richblack-50 -z-10 transition-opacity py-2 px-1 flex flex-col gap-3  text-black group-hover:opacity-100 group-hover:z-10 opacity-0">
+                    <RiArrowDownWideLine className=" "></RiArrowDownWideLine>
+                    <div className="absolute  top-8 -left-16  group-hover:opacity-100 group-hover:z-10 -z-10 transition-opacity  duration-200 opacity-0">
+                      <div className=" group w-[300px]    rounded-lg bg-richblack-50  py-2 px-1 flex flex-col gap-3  text-black ">
                         <div className="bg-richblack-50 w-6 h-6  right-[45%] -top-2 rotate-45 t  rounded absolute"></div>
                         {subLinks.map((link, id) => (
                           <Link
