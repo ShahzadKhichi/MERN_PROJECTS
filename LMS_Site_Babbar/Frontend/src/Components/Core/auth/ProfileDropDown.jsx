@@ -40,7 +40,7 @@ const ProfileDropDown = ({ user, token }) => {
       >
         <Link
           onClick={(e) => e.stopPropagation()}
-          to={"profile-dashboard"}
+          to={"dashboard/profile"}
           className="flex gap-2 items-center hover:scale-105 duration-200 "
         >
           <VscDashboard />

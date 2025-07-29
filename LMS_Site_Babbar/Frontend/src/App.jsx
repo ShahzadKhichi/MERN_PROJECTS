@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import UpdatePassword from "./Pages/UpdatePassword";
 import VerifyEmail from "./Pages/VerifyEmail";
 import About from "./Pages/About";
+import ContactUs from "./Pages/ContactUs";
+import Dashboard from "./Pages/Dashboard";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
@@ -28,7 +30,7 @@ function App() {
     }
   }, [loading]);
   return (
-    <div className="bg-richblack-900 ">
+    <div className="bg-richblack-900 min-h-[100vh] ">
       <div
         className={` bg-richblack-900 ${
           loading ? "opacity-50 pointer-events-none" : ""
@@ -79,6 +81,9 @@ function App() {
               </OpenRoute>
             }
           />
+
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/dashboard/profile" element={<Dashboard />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
