@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
 import { logout } from "../../../services/APIS/auth";
 import { useDispatch } from "react-redux";
+import useOnClickOutside from "../../../Hooks/useOnClickOutside";
 
 const ProfileDropDown = ({ user, token }) => {
   const ref = useRef(null);
@@ -15,6 +16,8 @@ const ProfileDropDown = ({ user, token }) => {
     e.stopPropagation();
     await logout(dispatch, navigate, token);
   };
+
+  useOnClickOutside(ref, () => setOpen(false));
 
   return (
     <button className="relative " onClick={() => setOpen(!open)} ref={ref}>

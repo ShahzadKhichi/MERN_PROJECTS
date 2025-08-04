@@ -6,7 +6,6 @@ const SideBarLink = ({ icon, path, name }) => {
   const Icon = icons[icon];
 
   const location = useLocation();
-  console.log(location);
 
   return (
     <div

@@ -9,13 +9,12 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { sidebarLinks } from "../../../data/dashboard-links";
 import SideBarLink from "./SideBarLink";
 
-const SideBar = () => {
+const SideBar = ({ setLogoutCm }) => {
   const ref = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const user = useSelector(({ profile }) => profile.user);
-  console.log(user);
 
   const logoutHandler = async (e) => {
     e.stopPropagation();
@@ -50,7 +49,10 @@ const SideBar = () => {
           name={"Settings"}
           icon={"VscSettingsGear"}
         />
-        <div className="flex  font-inter  hover:bg-yellow-800 duration-300 py-1 group text-xl gap-2 items-center">
+        <div
+          onClick={() => setLogoutCm(true)}
+          className="flex  font-inter  hover:bg-yellow-800 duration-300 py-1 group text-xl gap-2 items-center"
+        >
           <div className="w-1 h-full  bg-yellow-50 opacity-0 group-hover:opacity-100 duration-200 mr-4 "></div>
           <IoLogOutOutline />
           Logout
