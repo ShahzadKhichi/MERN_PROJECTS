@@ -16,6 +16,14 @@ import VerifyEmail from "./Pages/VerifyEmail";
 import About from "./Pages/About";
 import ContactUs from "./Pages/ContactUs";
 import Dashboard from "./Pages/Dashboard";
+import PrivateRoute from "./Components/Core/auth/PrivateRoute";
+import Profile from "./Components/Core/Dashboard/Profile";
+import Settings from "./Components/Core/Dashboard/Settings";
+import EnrolledCoursed from "./Components/Core/Dashboard/EnrolledCoursed";
+import Cart from "./Components/Core/Dashboard/Cart";
+import InstructorDashboard from "./Components/Core/Dashboard/InstructorDashboard";
+import MyCourses from "./Components/Core/Dashboard/MyCourses";
+import AddCourse from "./Components/Core/Dashboard/AddCourse";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
@@ -83,7 +91,28 @@ function App() {
           />
 
           <Route path="/contact" element={<ContactUs />} />
-          <Route path="/dashboard/profile" element={<Dashboard />} />
+          <Route
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          >
+            <Route path="/dashboard/profile" element={<Profile />} />
+            <Route
+              path="/dashboard/enrolled-courses"
+              element={<EnrolledCoursed />}
+            />
+            <Route path="/dashboard/settings" element={<Settings />} />
+            <Route path="/dashboard/cart" element={<Cart />} />
+
+            <Route
+              path="/dashboard/instructor"
+              element={<InstructorDashboard />}
+            />
+            <Route path="/dashboard/my-courses" element={<MyCourses />} />
+            <Route path="/dashboard/add-course" element={<AddCourse />} />
+          </Route>
 
           <Route path="*" element={<Error />} />
         </Routes>
