@@ -105,8 +105,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="mx-auto w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-7">
-          <div className="flex gap-10 my-20">
+        <div className="mx-auto w-11/12 max-w-maxContent  flex flex-col justify-center items-center lg:justify-between gap-7">
+          <div className="flex lg:flex-row flex-col  items-center lg:items-start  gap-10 my-20">
             <div className="w-[50%] text-4xl font-inter font-bold">
               Get the skills you need for a{" "}
               <HighlightText text={"job that is in demand"} />

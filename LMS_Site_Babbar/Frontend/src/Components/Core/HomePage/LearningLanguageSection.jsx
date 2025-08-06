@@ -8,7 +8,7 @@ import im3 from "../../../assets/Images/Plan_your_lessons.png";
 const LearningLanguageSection = () => {
   return (
     <div className="flex flex-col gap-5 mt-48 items-center mb-10">
-      <div className="text-4xl font-inter font-bold">
+      <div className="text-4xl text-center font-inter font-bold">
         Your Swiss knife for
         <HighlightText text={" Learning any language"} />
       </div>
@@ -16,10 +16,10 @@ const LearningLanguageSection = () => {
         Using spin making learning multiple languages easy. with 20+ languages
         realistic voice-over, progress tracking custom schedule and more.
       </div>
-      <div className="flex justify-center items-center mt-5">
-        <img src={im1} alt="" className="object-contain -mr-24" />
+      <div className="flex  lg:flex-row flex-col justify-center items-center mt-5">
+        <img src={im1} alt="" className="object-contain lg:-mr-24" />
         <img src={im2} alt="" />
-        <img src={im3} alt="" className="-m-32" />
+        <img src={im3} alt="" className="lg:-m-32" />
       </div>
       <div className="w-fit">
         <CTAButton active={true} linkto={"/signup"}>

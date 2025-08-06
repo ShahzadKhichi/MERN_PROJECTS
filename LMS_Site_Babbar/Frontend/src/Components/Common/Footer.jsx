@@ -111,7 +111,7 @@ const Footer = () => {
             <div className="w-[1px] h-[18px] bg-richblack-700"></div>
             <div>Terms</div>
           </div>
-          <div>Made with ❤️ Shahzad Khichi @2023 StudyNotion</div>
+          <div>Made with ❤️ Shahzad Khichi @2025 StudyNotion</div>
         </div>
       </div>
     </div>

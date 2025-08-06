@@ -31,7 +31,7 @@ export const login = async (data, navigate, dispatch) => {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", JSON.stringify(data.token));
 
-        navigate("/");
+        navigate("/dashboard/profile");
       }
     }
   } catch (error) {
@@ -75,7 +75,7 @@ export const signup = async (data, navigate, dispatch) => {
       localStorage.setItem("user", JSON.stringify(res.data.user));
       localStorage.setItem("token", JSON.stringify(res.data.token));
       toast.success("Signup successfull");
-      navigate("/");
+      navigate("/dashboard/profile");
     }
   } catch (error) {
     toast.error(error?.response?.data?.message || "failed to verify email");

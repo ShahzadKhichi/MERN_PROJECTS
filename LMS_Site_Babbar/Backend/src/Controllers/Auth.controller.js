@@ -53,7 +53,9 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email })
+      .populate("additionalDetails")
+      .exec();
 
     if (!user) {
       return res.status(401).json({
@@ -68,6 +70,15 @@ exports.login = async (req, res) => {
         message: "Invalid Email or Password",
         success: false,
       });
+    }
+
+    const dob = user?.additionalDetails?.dateOfBirth
+      ? user.additionalDetails.dateOfBirth.split("")
+      : null;
+
+    if (dob) {
+      dob.length = 15;
+      user.additionalDetails.dateOfBirth = dob.join("");
     }
 
     const token = user.generateToken();

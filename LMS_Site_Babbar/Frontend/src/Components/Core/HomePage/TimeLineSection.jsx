@@ -31,7 +31,7 @@ const timeline = [
 
 const TimeLineSection = () => {
   return (
-    <div className="flex gap-10 items-center">
+    <div className="flex lg:flex-row flex-col gap-10 items-center">
       <div className="flex flex-col gap-8 w-[45%]">
         {timeline.map((item, index) => (
           <div className="flex  gap-6 items-center " key={index}>
@@ -58,23 +58,23 @@ const TimeLineSection = () => {
         ))}
       </div>
 
-      <div className="relative  ">
+      <div className="relative  w-11/12 ">
         <img
           src={timelineImage}
           alt="timeline image"
           className="shadow-white object-cover h-fit rounded"
         />
-        <div className="absolute -bottom-10 translate-x-[25%] rounded  flex bg-caribbeangreen-700 text-white items-center  p-2 h-[20%] gap-4">
+        <div className="absolute -bottom-10  lg:translate-x-[25%] translate-x-[30%] md:translate-x-[110%] rounded  flex bg-caribbeangreen-700 text-white items-center lg:flex-row flex-col h-fit   p-[3px] lg:p-2 lg:h-[20%] gap-2  lg:gap-4">
           <div className="flex items-center gap-2">
             <p className="text-3xl font-bold">10</p>
-            <p className="text-caribbeangreen-100 text-sm">
+            <p className="text-caribbeangreen-100 text-sm ">
               Years of Experience
             </p>
           </div>
-          <div className="w-[3px] h-[50px] rounded bg-caribbeangreen-50"></div>
+          <div className="lg:w-[3px] w-full lg:h-[50px] h-[3px] rounded bg-caribbeangreen-50"></div>
           <div className="flex items-center gap-2">
             <p className="text-3xl font-bold">250</p>
-            <p className="text-caribbeangreen-100 text-sm">
+            <p className="text-caribbeangreen-100 text-sm ">
               Years of Experience
             </p>
           </div>

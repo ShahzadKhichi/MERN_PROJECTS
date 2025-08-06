@@ -33,15 +33,15 @@ const ExploreMore = () => {
       <div className="text-richblack-400">
         Learn To Build Anything. You Can imagine
       </div>
-      <div className="flex h-16 items-center justify-between p-2 w-[60%] rounded-full bg-richblack-800 text-richblack-100">
+      <div className="flex h-fit items-center justify-between lg:p-2  w-[90vw] mx-2 sm:w-fit rounded-full bg-richblack-800 text-richblack-100">
         {tabsName.map((tab, id) => {
           return (
             <div
               key={id}
               onClick={() => setMyCards(tab)}
-              className={`py-3 px-6 rounded-full ${
+              className={`lg:py-3 lg:px-6 px-2 rounded-full lg:text-lg text-xs py-1 m-1 ${
                 tab == currentTab
-                  ? "bg-richblack-900 text-richblack-5 cursor-pointer"
+                  ? "bg-richblack-900  text-richblack-5 cursor-pointer"
                   : ""
               } hover:bg-richblack-900 hover:text-richblack-5 transition-colors duration-200  ease-in`}
             >
@@ -50,7 +50,7 @@ const ExploreMore = () => {
           );
         })}
       </div>
-      <div className="flex gap-10 translate-y-[30%] ">
+      <div className="flex gap-10 lg:flex-row flex-col w-[300px] lg:w-fit lg:translate-y-[30%] ">
         {courses.map((course, id) => (
           <CourseCard
             key={id}

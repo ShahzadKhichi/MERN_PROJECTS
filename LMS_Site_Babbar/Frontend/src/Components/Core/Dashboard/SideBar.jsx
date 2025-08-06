@@ -1,25 +1,16 @@
-import React, { useRef, useState } from "react";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
-import { logout } from "../../../services/APIS/auth";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useSelector } from "react-redux";
 import { IoLogOutOutline } from "react-icons/io5";
 
 import { sidebarLinks } from "../../../data/dashboard-links";
 import SideBarLink from "./SideBarLink";
 
 const SideBar = ({ setLogoutCm }) => {
-  const ref = useRef(null);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
   const user = useSelector(({ profile }) => profile.user);
 
-  const logoutHandler = async (e) => {
-    e.stopPropagation();
-    await logout(dispatch, navigate, token);
-  };
   return (
     <div className="flex flex-col h-full text-white w-full py-10 text-lg     bg-richblack-700">
       <div className="h-fit w-full flex flex-col gap-1">
