@@ -29,10 +29,10 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course", courseRouter);
 app.use("/api/v1/profile", profileRouter);
 
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.status(200).json({
     active: true,
-    message: "Server is up and running",
+    message: "server is running",
   });
 });
 
