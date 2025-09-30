@@ -13,7 +13,11 @@ const courseRouter = require("./src/Routes/course.routes");
 const profileRouter = require("./src/Routes/profile.routes");
 
 const app = express();
-app.use(cors({}));
+app.use(
+  cors({
+    origin: "https://skstudynotion.netlify.app/",
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
