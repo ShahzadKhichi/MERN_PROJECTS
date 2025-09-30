@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Home from "./Pages/Home";
 import Navbar from "./Components/Common/Navbar";
@@ -7,7 +7,7 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Error from "./Pages/Error";
 import ForgetPassword from "./Pages/ForgetPassword";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import OpenRoute from "./Components/Core/auth/OpenRoute";
 import { useEffect, useState } from "react";
@@ -20,15 +20,27 @@ import PrivateRoute from "./Components/Core/auth/PrivateRoute";
 import Profile from "./Components/Core/Dashboard/Profile";
 import Settings from "./Components/Core/Dashboard/Settings";
 import EnrolledCoursed from "./Components/Core/Dashboard/EnrolledCoursed";
-import Cart from "./Components/Core/Dashboard/Cart";
+import Cart from "./Components/Core/Dashboard/Cart/index";
 import InstructorDashboard from "./Components/Core/Dashboard/InstructorDashboard";
 import MyCourses from "./Components/Core/Dashboard/MyCourses";
-import AddCourse from "./Components/Core/Dashboard/AddCourse";
+import AddCourse from "./Components/Core/Dashboard/AddCourse/index";
+import { getUserDetails } from "./services/APIS/profile";
+import { setLoading } from "./slices/auth.slice";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
   const [toastId, setToastId] = useState(null);
+  const user = useSelector(({ profile }) => profile.user);
+  const token = useSelector(({ auth }) => auth.token);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  if (!user && token) {
+    getUserDetails(token, navigate, dispatch)
+      .then(() => {})
+      .catch(() => {});
+    dispatch(setLoading(false));
+  }
   useEffect(() => {
     if (loading && !toastId) {
       setToastId(toast.loading("loading..."));

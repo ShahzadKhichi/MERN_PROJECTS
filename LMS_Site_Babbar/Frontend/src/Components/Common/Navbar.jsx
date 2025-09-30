@@ -14,7 +14,7 @@ import ProfileDropDown from "../Core/auth/ProfileDropDown";
 
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
+  const user = useSelector(({ profile }) => profile.user);
   const { totalItems } = useSelector((state) => state.cart);
 
   const [subLinks, setSubLinks] = useState([]);
@@ -41,7 +41,7 @@ const Navbar = () => {
   }
   useEffect(() => {
     updatePath();
-  }, [location.pathname]);
+  }, [location.pathname, totalItems]);
   return (
     <nav className="w-full border-richblack-500 border-b-[1px]  ">
       <div className="w-11/12 flex max-w-maxContent items-center justify-between h-16  bg-richblack-900 mx-auto">

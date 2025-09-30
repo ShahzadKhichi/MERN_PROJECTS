@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CTAButton from "../HomePage/CTAButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaRegEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { getUserDetails } from "../../../services/APIS/profile";
+import { setUser } from "../../../slices/profile.slice";
 
 const Profile = () => {
-  const user = useSelector(({ profile }) => profile.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const u = useSelector(({ profile }) => profile.user);
+  const [user, setUsr] = useState(
+    u || {
+      firstName: "",
+      lastName: "",
+      email: "",
+    }
+  );
+  const token = useSelector(({ auth }) => auth.token);
+
+  const fetchUserDetails = async () => {
+    const res = await getUserDetails(token, navigate, dispatch);
+    if (res?.user) {
+      console.log("here");
+      dispatch(setUser(res.user));
+      setUsr(res.user);
+    }
+  };
+
+  useEffect(() => {
+    if (!user?.additionalDetails || !user) {
+      fetchUserDetails();
+    }
+  }, []);
+
   const personalDetails_1 = [
     {
       label: "First Name",
@@ -35,8 +64,6 @@ const Profile = () => {
       value: user?.additionalDetails?.dateOfBirth || "Add Date of Birth",
     },
   ];
-
-  console.log(user);
 
   return (
     <div className="flex  justify-center items-center w-full">

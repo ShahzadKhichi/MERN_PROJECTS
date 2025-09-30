@@ -28,7 +28,6 @@ export const login = async (data, navigate, dispatch) => {
         dispatch(setToken(data.token));
         dispatch(setUser(data.user));
 
-        localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", JSON.stringify(data.token));
 
         navigate("/dashboard/profile");

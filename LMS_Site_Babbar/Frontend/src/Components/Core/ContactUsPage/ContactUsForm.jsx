@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Input from "../../Common/Input";
 import CTAButton from "../HomePage/CTAButton";
 import CountryCode from "../../../data/countrycode.json";
 
 const ContactUsForm = () => {
-  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { isSubmitSuccessful },
   } = useForm();
 
   const handleFormSubmit = async (data) => {

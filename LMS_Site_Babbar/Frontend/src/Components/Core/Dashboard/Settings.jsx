@@ -1,33 +1,57 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CTAButton from "../HomePage/CTAButton";
-import {
-  FaCloudUploadAlt,
-  FaBasketballBall,
-  FaDrumSteelpan,
-} from "react-icons/fa";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 import { VscTrash } from "react-icons/vsc";
 import { useRef } from "react";
 import { useState } from "react";
 import Input from "../../Common/Input";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { updatePassword } from "../../../services/APIS/profile";
+import toast from "react-hot-toast";
+import InputPassword from "../../Common/InputPassword";
 
 const Settings = () => {
+  const token = useSelector(({ auth }) => auth.token);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const ppRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const user = useSelector(({ profile }) => profile.user);
   const [details, setDetails] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    dateOfBirth: user.additionalDetails.dateofBirth || "",
-    gender: user.additionalDetails.gender || "",
-    about: user.additionalDetails.about || "",
-    contactNumber: user.additionalDetails.contactNumber || "",
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    dateOfBirth: user?.additionalDetails.dateofBirth || "",
+    gender: user?.additionalDetails.gender || "",
+    about: user?.additionalDetails.about || "",
+    contactNumber: user?.additionalDetails.contactNumber || "",
   });
   const [password, setPassword] = useState({
-    currentPassword: "",
+    oldPassword: "",
     newPassword: "",
   });
+  useEffect(() => {
+    setDetails({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      dateOfBirth: user?.additionalDetails.dateofBirth || "",
+      gender: user?.additionalDetails.gender || "",
+      about: user?.additionalDetails.about || "",
+      contactNumber: user?.additionalDetails.contactNumber || "",
+    });
+  }, [user]);
+
+  const updatePasswordHandler = async () => {
+    if (password.newPassword == "" || password.oldPassword == "") {
+      toast.error("All fileds are required");
+      return;
+    }
+    await updatePassword(token, password, navigate, dispatch);
+    setPassword({ newPassword: "", oldPassword: "" });
+  };
 
   return (
     <div className="flex  justify-center items-center w-full">
@@ -41,7 +65,7 @@ const Settings = () => {
               className="rounded-full"
               width={80}
               height={80}
-              src={preview || user.imageUrl}
+              src={preview || user?.imageUrl}
               alt="Profile image"
             />
             <div className="flex flex-col gap-1">
@@ -164,21 +188,21 @@ const Settings = () => {
           <div className="w-full gap-4 flex flex-col ">
             <div className="w-full flex gap-6">
               <div className="w-full">
-                <Input
-                  Placeholder={"current password"}
+                <InputPassword
+                  placeholder={"current password"}
                   label={"Current Password"}
-                  value={password.currentPassword || ""}
+                  value={password.oldPassword || ""}
                   onChange={(e) =>
                     setPassword({
                       ...password,
-                      currentPassword: e.target.value,
+                      oldPassword: e.target.value,
                     })
                   }
                 />
               </div>
               <div className="w-full">
-                <Input
-                  Placeholder={"new password"}
+                <InputPassword
+                  placeholder={"new password"}
                   label={"New Password"}
                   value={password.newPassword || ""}
                   onChange={(e) =>
@@ -190,11 +214,14 @@ const Settings = () => {
           </div>
         </div>
         <div className="w-full flex justify-end gap-2">
-          <div className="flex hover:scale-105 duration-200 text-white py-3 font-bold bg-richblack-500 px-6 rounded-md  gap-2 items-center">
+          <div
+            className="flex hover:scale-105 duration-200 text-white py-3 font-bold bg-richblack-500 px-6 rounded-md  gap-2 items-center"
+            onClick={() => setPassword({ newPassword: "", oldPassword: "" })}
+          >
             Cancle
           </div>
 
-          <CTAButton active={true}>
+          <CTAButton active={true} onClick={updatePasswordHandler}>
             <div className="flex gap-2 items-center">Update</div>
           </CTAButton>
         </div>

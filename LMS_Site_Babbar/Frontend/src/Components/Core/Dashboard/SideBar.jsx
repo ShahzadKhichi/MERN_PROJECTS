@@ -15,7 +15,7 @@ const SideBar = ({ setLogoutCm }) => {
     <div className="flex flex-col h-full text-white w-full py-10 text-lg     bg-richblack-700">
       <div className="h-fit w-full flex flex-col gap-1">
         {sidebarLinks.map((link, id) =>
-          link?.type == user.accountType ? (
+          link?.type == user?.accountType ? (
             <SideBarLink
               path={link.path}
               icon={link.icon}
