@@ -5,7 +5,7 @@ const mailSender = require("../utils/mailSender");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 
-exports.changePassword = async (req, res) => {
+exports.resetPassword = async (req, res) => {
   try {
     const { confirmPassword, password, token } = req.body;
     if (!token || !confirmPassword || !password) {
@@ -43,6 +43,48 @@ exports.changePassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "internel server error",
+    });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(404).json({
+        success: false,
+        message: "All filds are requried",
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const check = await user.comparePassword(oldPassword);
+
+    if (!check) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid passowrd",
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      password: "Password updated successfuly",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "internel server error",
+      success: false,
     });
   }
 };

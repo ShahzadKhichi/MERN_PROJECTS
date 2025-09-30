@@ -53,9 +53,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email })
-      .populate("additionalDetails")
-      .exec();
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({
@@ -72,16 +70,8 @@ exports.login = async (req, res) => {
       });
     }
 
-    const dob = user?.additionalDetails?.dateOfBirth
-      ? user.additionalDetails.dateOfBirth.split("")
-      : null;
-
-    if (dob) {
-      dob.length = 15;
-      user.additionalDetails.dateOfBirth = dob.join("");
-    }
-
     const token = user.generateToken();
+    user.additionalDetai = {};
 
     res.cookie("token", token);
     res.status(200).json({

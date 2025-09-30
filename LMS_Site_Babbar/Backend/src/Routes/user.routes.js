@@ -8,7 +8,7 @@ const {
 } = require("../Controllers/Auth.controller");
 const {
   resetPasswordTokenSender,
-  changePassword,
+  resetPassword,
 } = require("../Controllers/ResetPassword.controller");
 const { auth } = require("../Middleware/auth.middleware");
 
@@ -20,6 +20,6 @@ router.post("/logout", auth, logout);
 
 // reset password
 router.post("/send-token", resetPasswordTokenSender);
-router.post("/reset-password", changePassword);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;

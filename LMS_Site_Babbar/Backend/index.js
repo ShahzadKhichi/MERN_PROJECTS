@@ -1,6 +1,6 @@
 const express = require("express");
-const { connectDB } = require("./Config/database");
-const connectCloudinary = require("./Config/cloudinary");
+const { connectDB } = require("./src/Config/database");
+const connectCloudinary = require("./src/Config/cloudinary");
 const fileUpload = require("express-fileupload");
 
 const cookieParser = require("cookie-parser");
@@ -8,9 +8,9 @@ const cors = require("cors");
 
 //routers import
 
-const userRouter = require("./Routes/user.routes");
-const courseRouter = require("./Routes/course.routes");
-const profileRouter = require("./Routes/profile.routes");
+const userRouter = require("./src/Routes/user.routes");
+const courseRouter = require("./src/Routes/course.routes");
+const profileRouter = require("./src/Routes/profile.routes");
 
 const app = express();
 app.use(cors({}));

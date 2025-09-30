@@ -16,7 +16,7 @@ exports.auth = async (req, res, next) => {
       });
     }
 
-    const decode = User.decodeToken(token);
+    const decode = await User.decodeToken(token);
 
     if (!decode) {
       return res.status(401).json({

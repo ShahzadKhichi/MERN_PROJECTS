@@ -142,3 +142,28 @@ exports.updateProfilePicture = async (req, res) => {
     });
   }
 };
+
+exports.getUserEnrolledCourses = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId).populate("courses").exec();
+
+    if (!userDetails) {
+      return res.status(400).json({
+        message: "user not found",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "user detailes",
+      data: userDetails.courses || [],
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internel server error",
+      success: false,
+    });
+  }
+};
