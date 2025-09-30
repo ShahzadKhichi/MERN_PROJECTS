@@ -1,7 +1,7 @@
 import { authEndpoints } from "../apis";
 import { apiConnector } from "../apiConnector";
 import { setLoading, setSignupData, setToken } from "../../slices/auth.slice";
-import { setUser } from "../../../../Study-Notion-master/src/slices/profileSlice";
+import { setUser } from "../../slices/profile.slice";
 import toast from "react-hot-toast";
 
 const {
