@@ -14,7 +14,7 @@ const profileRouter = require("./src/Routes/profile.routes");
 const { model } = require("mongoose");
 
 const app = express();
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "*", credentials: true }));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -36,8 +36,6 @@ app.get("/", (req, res) => {
     message: "server is running",
   });
 });
-
-exports.module = app;
 
 async function startApp() {
   try {
