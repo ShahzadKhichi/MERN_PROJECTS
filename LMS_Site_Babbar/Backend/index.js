@@ -11,6 +11,7 @@ const cors = require("cors");
 const userRouter = require("./src/Routes/user.routes");
 const courseRouter = require("./src/Routes/course.routes");
 const profileRouter = require("./src/Routes/profile.routes");
+const { model } = require("mongoose");
 
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -35,6 +36,8 @@ app.get("/", (req, res) => {
     message: "server is running",
   });
 });
+
+exports.module = app;
 
 async function startApp() {
   try {
