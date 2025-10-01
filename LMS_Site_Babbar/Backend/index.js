@@ -13,12 +13,7 @@ const courseRouter = require("./src/Routes/course.routes");
 const profileRouter = require("./src/Routes/profile.routes");
 
 const app = express();
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(cookieParser());
