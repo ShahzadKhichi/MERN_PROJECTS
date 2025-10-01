@@ -15,7 +15,8 @@ const profileRouter = require("./src/Routes/profile.routes");
 const app = express();
 app.use(
   cors({
-    origin: "https://skstudynotion.netlify.app/",
+    origin: true,
+    credentials: true,
   })
 );
 
