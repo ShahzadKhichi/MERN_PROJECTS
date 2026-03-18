@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 
 // import { setLoading } from "../../slices/profileSlice";
-import { apiConnector } from "../apiconnector";
+import { apiConnector } from "../apiConnector";
 import { courseEndpoints } from "../apis";
 import { setLoading } from "../../slices/auth.slice";
 
@@ -65,6 +65,8 @@ export const fetchCourseDetails = async (courseId, dispatch) => {
 
 // fetching the available course categories
 export const fetchCourseCategories = async (dispatch) => {
+  console.log("here");
+
   dispatch(setLoading(true));
   let result = null;
   try {
@@ -73,12 +75,14 @@ export const fetchCourseCategories = async (dispatch) => {
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Course Categories");
     }
-    result = response?.data?.data;
+    result = response?.data?.Categories || response;
   } catch (error) {
     console.log("COURSE_CATEGORY_API API ERROR............", error);
     toast.error(error.message);
+  } finally {
+    dispatch(setLoading(false));
+    return result;
   }
-  return result;
 };
 
 // add the course details

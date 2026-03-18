@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCourseCategories } from "../../../../../services/APIS/courseDetailsAPI";
 
 const CourseInformationForm = () => {
   const {
@@ -15,7 +17,20 @@ const CourseInformationForm = () => {
 
   const [courseCategories, setCategories] = useState([]);
 
-  async function fetchCatgories() {}
+  const { course, editCourse } = useSelector(({ course }) => course);
+
+  async function fetchCatgories() {
+    try {
+      const res = await fetchCourseCategories(dispatch);
+      console.log(res);
+    } catch (error) {
+      console.log("error in fetching categories", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCatgories();
+  }, []);
 
   return <div>CourseInformationForm</div>;
 };
