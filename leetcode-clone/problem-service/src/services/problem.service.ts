@@ -1,12 +1,10 @@
-import Problem from "../models/problem.model";
 import { IProblem } from "../models/problem.model";
+import ProblemRepository from "../repository/problem.repository";
 
-
-class ProblemRepository {
+class ProblemService {
     async createProblem(problem: IProblem) {
         try {
-            const newProblem = new Problem(problem);
-            await newProblem.save();
+            const newProblem = await ProblemRepository.createProblem(problem);
             return newProblem;
         } catch (error) {
             throw error;
@@ -15,7 +13,7 @@ class ProblemRepository {
 
     async getAllProblems() {
         try {
-            const problems = await Problem.find();
+            const problems = await ProblemRepository.getAllProblems();
             return problems;
         } catch (error) {
             throw error;
@@ -24,7 +22,7 @@ class ProblemRepository {
 
     async getProblemById(id: string) {
         try {
-            const problem = await Problem.findById(id);
+            const problem = await ProblemRepository.getProblemById(id);
             return problem;
         } catch (error) {
             throw error;
@@ -33,7 +31,7 @@ class ProblemRepository {
 
     async updateProblem(id: string, problem: IProblem) {
         try {
-            const updatedProblem = await Problem.findByIdAndUpdate(id, problem, { new: true });
+            const updatedProblem = await ProblemRepository.updateProblem(id, problem);
             return updatedProblem;
         } catch (error) {
             throw error;
@@ -42,7 +40,7 @@ class ProblemRepository {
 
     async deleteProblem(id: string) {
         try {
-            const deletedProblem = await Problem.findByIdAndDelete(id);
+            const deletedProblem = await ProblemRepository.deleteProblem(id);
             return deletedProblem;
         } catch (error) {
             throw error;
@@ -50,4 +48,4 @@ class ProblemRepository {
     }
 }
 
-export default new ProblemRepository();
+export default new ProblemService();
