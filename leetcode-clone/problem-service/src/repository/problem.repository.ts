@@ -1,8 +1,15 @@
+import { ZodNullable } from "zod";
 import Problem from "../models/problem.model";
 import { IProblem } from "../models/problem.model";
 
-
-class ProblemRepository {
+export interface IProblemRepository {
+    createProblem(problem: IProblem): Promise<IProblem>;
+    getAllProblems(): Promise<IProblem[]>;
+    getProblemById(id: string): Promise<IProblem|null>;
+    updateProblem(id: string, problem: IProblem): Promise<IProblem|null>;
+    deleteProblem(id: string): Promise<IProblem|null>;
+}
+class ProblemRepository implements IProblemRepository {
     async createProblem(problem: IProblem) {
         try {
             const newProblem = new Problem(problem);

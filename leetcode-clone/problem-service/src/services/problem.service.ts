@@ -1,51 +1,64 @@
 import { IProblem } from "../models/problem.model";
-import ProblemRepository from "../repository/problem.repository";
+import { IProblemRepository } from "../repository/problem.repository";
 
-class ProblemService {
-    async createProblem(problem: IProblem) {
+export interface IProblemService{
+    createProblem(problem: IProblem): Promise<IProblem>;
+    getAllProblems(): Promise<IProblem[]>;
+    getProblemById(id: string): Promise<IProblem|null>;
+    updateProblem(id: string, problem: IProblem): Promise<IProblem|null>;
+    deleteProblem(id: string): Promise<IProblem|null>;
+}
+
+export class ProblemService implements IProblemService{
+    declare problemRepositroy:IProblemRepository;
+
+    constructor(problemRepositroy:IProblemRepository){
+        this.problemRepositroy = problemRepositroy;
+    }
+
+    async createProblem(problem: IProblem): Promise<IProblem> {
         try {
-            const newProblem = await ProblemRepository.createProblem(problem);
+            const newProblem = await this.problemRepositroy.createProblem(problem);
             return newProblem;
         } catch (error) {
             throw error;
         }
     }
 
-    async getAllProblems() {
+    async getAllProblems(): Promise<IProblem[]> {
         try {
-            const problems = await ProblemRepository.getAllProblems();
+            const problems = await this.problemRepositroy.getAllProblems();
             return problems;
         } catch (error) {
             throw error;
         }
     }
 
-    async getProblemById(id: string) {
+    async getProblemById(id: string): Promise<IProblem|null> {
         try {
-            const problem = await ProblemRepository.getProblemById(id);
+            const problem = await this.problemRepositroy.getProblemById(id);
             return problem;
         } catch (error) {
             throw error;
         }
     }
 
-    async updateProblem(id: string, problem: IProblem) {
+    async updateProblem(id: string, problem: IProblem): Promise<IProblem|null> {
         try {
-            const updatedProblem = await ProblemRepository.updateProblem(id, problem);
+            const updatedProblem = await this.problemRepositroy.updateProblem(id, problem);
             return updatedProblem;
         } catch (error) {
             throw error;
         }
     }
 
-    async deleteProblem(id: string) {
+    async deleteProblem(id: string): Promise<IProblem|null> {
         try {
-            const deletedProblem = await ProblemRepository.deleteProblem(id);
+            const deletedProblem = await this.problemRepositroy.deleteProblem(id);
             return deletedProblem;
         } catch (error) {
             throw error;
         }
     }
 }
-
-export default new ProblemService();
+    
