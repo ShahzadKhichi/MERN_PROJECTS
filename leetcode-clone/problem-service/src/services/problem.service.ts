@@ -1,5 +1,6 @@
+import { inject, injectable } from "tsyringe";
 import { IProblem } from "../models/problem.model";
-import { IProblemRepository } from "../repository/problem.repository";
+import { IProblemRepository, ProblemRepository } from "../repository/problem.repository";
 
 export interface IProblemService{
     createProblem(problem: IProblem): Promise<IProblem>;
@@ -9,10 +10,13 @@ export interface IProblemService{
     deleteProblem(id: string): Promise<IProblem|null>;
 }
 
+@injectable()
 export class ProblemService implements IProblemService{
     declare problemRepositroy:IProblemRepository;
-
-    constructor(problemRepositroy:IProblemRepository){
+    constructor(
+        @inject(ProblemRepository)
+        problemRepositroy:ProblemRepository
+    ){
         this.problemRepositroy = problemRepositroy;
     }
 

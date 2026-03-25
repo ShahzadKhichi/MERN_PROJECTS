@@ -1,6 +1,9 @@
-import { ZodNullable } from "zod";
+
 import Problem from "../models/problem.model";
 import { IProblem } from "../models/problem.model";
+import logger from "../config/logger.config";
+import { injectable } from "tsyringe";
+
 
 export interface IProblemRepository {
     createProblem(problem: IProblem): Promise<IProblem>;
@@ -9,7 +12,12 @@ export interface IProblemRepository {
     updateProblem(id: string, problem: IProblem): Promise<IProblem|null>;
     deleteProblem(id: string): Promise<IProblem|null>;
 }
-class ProblemRepository implements IProblemRepository {
+@injectable()
+export class ProblemRepository implements IProblemRepository {
+    constructor()
+    {
+        logger.info("ProblemRepository initialized");
+    }
     async createProblem(problem: IProblem) {
         try {
             const newProblem = new Problem(problem);
@@ -57,4 +65,3 @@ class ProblemRepository implements IProblemRepository {
     }
 }
 
-export default new ProblemRepository();

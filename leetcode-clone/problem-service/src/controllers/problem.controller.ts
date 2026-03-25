@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { IProblem } from "../models/problem.model";
-import { IProblemService } from "../services/problem.service";
+import { IProblemService, ProblemService } from "../services/problem.service";
 
 import status from "http-status";
+import { inject, injectable } from "tsyringe";
 
 export interface IProblemController {
     createProblem(req:Request,res:Response,next:NextFunction):Promise<void>;
@@ -13,11 +13,20 @@ export interface IProblemController {
 
 }
 
+@injectable()
 export class ProblemController implements IProblemController{
     declare problemService:IProblemService;
 
-    constructor(problemService:IProblemService){
+    constructor(
+        @inject(ProblemService)
+        problemService:ProblemService
+    ){
         this.problemService = problemService;
+        this.createProblem = this.createProblem.bind(this);
+        this.getAllProblems = this.getAllProblems.bind(this);
+        this.getProblemById = this.getProblemById.bind(this);
+        this.updateProblem = this.updateProblem.bind(this);
+        this.deleteProblem = this.deleteProblem.bind(this);
     }
 
     async createProblem(req:Request,res:Response,next:NextFunction) {
@@ -30,11 +39,6 @@ export class ProblemController implements IProblemController{
             });
         } catch (error) {
             next(error);
-             res.status(status.INTERNAL_SERVER_ERROR).json({
-                success:false,
-                message:"Failed to create problem",
-                data:null
-            });
         }
     }
 
@@ -48,17 +52,13 @@ export class ProblemController implements IProblemController{
             });
         } catch (error) {
             next(error);
-            res.status(status.INTERNAL_SERVER_ERROR).json({
-                success:false,
-                message:"Failed to fetch problems",
-                data:null
-            });
         }
     }
 
     async getProblemById(req:Request,res:Response,next:NextFunction) {
         try {
             const problem = await this.problemService.getProblemById(req.params.id);
+
             res.status(status.OK).json({
                 success:true,
                 message:"Problem fetched successfully",
@@ -66,11 +66,6 @@ export class ProblemController implements IProblemController{
             });
         } catch (error) {
             next(error);
-            res.status(status.INTERNAL_SERVER_ERROR).json({
-                success:false,
-                message:"Failed to fetch problem",
-                data:null
-            });
         }
     }
 
@@ -84,11 +79,6 @@ export class ProblemController implements IProblemController{
             });
         } catch (error) {
             next(error);
-            res.status(status.INTERNAL_SERVER_ERROR).json({
-                success:false,
-                message:"Failed to update problem",
-                data:null
-            });
         }
     }
 
@@ -102,11 +92,6 @@ export class ProblemController implements IProblemController{
             });
         } catch (error) {
             next(error);
-            res.status(status.INTERNAL_SERVER_ERROR).json({
-                success:false,
-                message:"Failed to delete problem",
-                data:null
-            });
         }
     }
     

@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 import logger from "./logger.config";
-import { serverConfig } from ".";
+import { serverConfig } from "./index";
+
 
 export const connectDB = async () => {
     try {
+        console.log(serverConfig.MONGO_URI);
         await mongoose.connect(serverConfig.MONGO_URI);
 
+        console.log("database connected");
         mongoose.connection.on("connected", () => {
             logger.info("Database connected successfully");
         });
