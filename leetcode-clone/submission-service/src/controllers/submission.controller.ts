@@ -3,6 +3,7 @@ import { ISubmissionService, SubmissionService } from "../services/submission.se
 
 import status from "http-status";
 import { inject, injectable } from "tsyringe";
+import logger from "../config/logger.config";
 
 export interface ISubmissionController {
     createSubmission(req:Request,res:Response,next:NextFunction):Promise<void>;
@@ -31,12 +32,15 @@ export class SubmissionController implements ISubmissionController{
 
     async createSubmission(req:Request,res:Response,next:NextFunction) {
         try {
+            logger.info("Creating submission");
             const submission = await this.submissionService.createSubmission(req.body)
+            logger.info("Submission created successfully");
              res.status(status.CREATED).json({
                 success:true,
                 message:"Submission created successfully",
                 data:submission
             });
+            
         } catch (error) {
             next(error);
         }
@@ -44,12 +48,15 @@ export class SubmissionController implements ISubmissionController{
 
     async getAllSubmissions(req:Request,res:Response,next:NextFunction) {
         try {
+            logger.info("Getting all submissions");
             const submissions = await this.submissionService.getAllSubmissions();
+            logger.info("Submissions fetched successfully");
             res.status(status.OK).json({
                 success:true,
                 message:"Submissions fetched successfully",
                 data:submissions
             });
+              
         } catch (error) {
             next(error);
         }
@@ -57,13 +64,14 @@ export class SubmissionController implements ISubmissionController{
 
     async getSubmissionById(req:Request,res:Response,next:NextFunction) {
         try {
+            logger.info("Getting submission by id");
             const submission = await this.submissionService.getSubmissionById(req.params.id);
-
             res.status(status.OK).json({
                 success:true,
                 message:"Submission fetched successfully",
                 data:submission
             });
+            logger.info("Submission fetched successfully");
         } catch (error) {
             next(error);
         }

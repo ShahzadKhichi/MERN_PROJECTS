@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ISubmission } from "../models/submission.model";
 import { ISubmissionRepository, SubmissionRepository } from "../repository/submission.repository";
+import logger from "../config/logger.config";
 
 export interface ISubmissionService{
     createSubmission(submission: ISubmission): Promise<ISubmission>;
@@ -18,11 +19,14 @@ export class SubmissionService implements ISubmissionService{
         submissionRepository:SubmissionRepository
     ){
         this.submissionRepository = submissionRepository;
+        logger.info("SubmissionService initialized");
     }
 
     async createSubmission(submission: ISubmission): Promise<ISubmission> {
         try {
+            logger.info("Creating submission");
             const newSubmission = await this.submissionRepository.createSubmission(submission);
+            
             return newSubmission;
         } catch (error) {
             throw error;
@@ -31,6 +35,7 @@ export class SubmissionService implements ISubmissionService{
 
     async getAllSubmissions(): Promise<ISubmission[]> {
         try {
+            logger.info("Getting all submissions");
             const submissions = await this.submissionRepository.getAllSubmissions();
             return submissions;
         } catch (error) {
@@ -49,6 +54,7 @@ export class SubmissionService implements ISubmissionService{
 
     async updateSubmission(id: string, submission: ISubmission): Promise<ISubmission|null> {
         try {
+            logger.info("Updating submission");
             const updatedSubmission = await this.submissionRepository.updateSubmission(id, submission);
             return updatedSubmission;
         } catch (error) {

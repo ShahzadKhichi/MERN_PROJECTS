@@ -21,6 +21,7 @@ export class SubmissionRepository implements ISubmissionRepository {
         try {
             const newSubmission = new Submission(submission);
             await newSubmission.save();
+            logger.info("Submission created successfully");
             return newSubmission;
         } catch (error) {
             throw error;
@@ -30,6 +31,7 @@ export class SubmissionRepository implements ISubmissionRepository {
     async getAllSubmissions() {
         try {
             const submissions = await Submission.find();
+            logger.info("All submissions fetched successfully");
             return submissions;
         } catch (error) {
             throw error;
@@ -39,6 +41,7 @@ export class SubmissionRepository implements ISubmissionRepository {
     async getSubmissionById(id: string) {
         try {
             const submission = await Submission.findById(id);
+            logger.info(`Submission with id ${id} fetched successfully`);
             return submission;
         } catch (error) {
             throw error;
@@ -48,6 +51,7 @@ export class SubmissionRepository implements ISubmissionRepository {
     async updateSubmission(id: string, submission: ISubmission) {
         try {
             const updatedSubmission = await Submission.findByIdAndUpdate(id, submission, { new: true });
+            logger.info(`Submission with id ${id} updated successfully`);
             return updatedSubmission;
         } catch (error) {
             throw error;
@@ -57,6 +61,7 @@ export class SubmissionRepository implements ISubmissionRepository {
     async deleteSubmission(id: string) {
         try {
             const deletedSubmission = await Submission.findByIdAndDelete(id);
+            logger.info(`Submission with id ${id} deleted successfully`);
             return deletedSubmission;
         } catch (error) {
             throw error;
