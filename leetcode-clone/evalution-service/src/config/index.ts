@@ -17,5 +17,5 @@ console.log(process.env.MONGO_URI)
 
 export const serverConfig: ServerConfig = {
     PORT: Number(process.env.PORT) || 3001,
-    MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/problem-db'
+    MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/submission-db'
 };
