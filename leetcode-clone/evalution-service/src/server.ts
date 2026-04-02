@@ -12,6 +12,8 @@ const app = express();
 
 app.use(express.json());
 
+//santization is remaining in submission part
+
 /**
  * Registering all the routers and their corresponding routes with out app server object.
  */
