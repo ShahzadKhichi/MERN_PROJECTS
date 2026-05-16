@@ -47,7 +47,7 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="w-[70%] flex flex-col gap-5 justify-center ">
+    <div className="w-full md:w-[70%] flex flex-col gap-5 justify-center mt-20 md:mt-0">
       <div className="text-4xl font-inter font-bold text-white">
         Join the millions learning to code with StudyNotion for free
       </div>
@@ -80,7 +80,7 @@ const SignupForm = () => {
               </button>
             </div>
             {/* firstName lastName handler */}
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <div className="w-full">
                 <Input
                   onChange={(e) =>
@@ -113,7 +113,7 @@ const SignupForm = () => {
                 label={"Email Address"}
               />
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <div className=" w-full">
                 <InputPassword
                   onChange={(e) =>

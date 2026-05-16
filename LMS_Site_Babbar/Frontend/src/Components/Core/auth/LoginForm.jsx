@@ -28,7 +28,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-[70%] flex flex-col gap-5 justify-center ">
+    <div className="w-full md:w-[70%] flex flex-col gap-5 justify-center">
       <div className="text-4xl font-inter font-bold text-white">
         Welcome Back
       </div>
