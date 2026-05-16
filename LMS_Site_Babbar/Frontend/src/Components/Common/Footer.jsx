@@ -9,9 +9,9 @@ import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
 const Footer = () => {
   return (
     <div className="flex lg:flex-row flex-col justify-center items-center it w-full  bg-richblack-800 pt-10">
-      <div className="flex flex-col h-[100%]  w-[70%]">
-        <div className="h-[90%] flex mb-4  lg:flex-row flex-col lg:gap-0 gap-10 ">
-          <div className="w-[50%] flex gap-10 -translate-y-4">
+      <div className="flex flex-col h-[100%] w-[90%] md:w-[70%]">
+        <div className="h-[90%] flex mb-4 lg:flex-row flex-col lg:gap-0 gap-10">
+          <div className="w-full lg:w-[50%] flex flex-col md:flex-row gap-10 -translate-y-4">
             <div className="flex flex-col gap-2">
               <div>{<img src={Logo} />}</div>
               <div className="flex flex-col gap-2">
@@ -82,7 +82,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="lg:w-[1px] w-full h-[2px] lg:h-auto bg-richblack-700"></div>
-          <div className="w-[50%] flex gap-20 pl-8">
+          <div className="w-full lg:w-[50%] flex flex-wrap lg:flex-nowrap gap-10 lg:gap-20 pl-0 lg:pl-8">
             {FooterLink2.map((item, id) => (
               <div className="flex flex-col gap-3 -translate-y-2 pb-6" key={id}>
                 <h2 className="text-white font-bold font-inter ">
@@ -103,7 +103,7 @@ const Footer = () => {
         {/* line */}
         <div className="h-[1px]  bg-richblack-700 "></div>
         {/* lower section */}
-        <div className="flex h-[15vh] justify-between items-center  font-inter text-richblack-500 ">
+        <div className="flex flex-col md:flex-row min-h-[15vh] py-4 md:py-0 justify-between items-center font-inter text-richblack-500 gap-4 md:gap-0">
           <div className="flex gap-2  items-center">
             <div>Privacy Policy</div>
             <div className="w-[1px] h-[18px] bg-richblack-700"></div>

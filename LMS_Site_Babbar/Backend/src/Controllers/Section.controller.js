@@ -1,78 +1,114 @@
 const Section = require("../Models/Section.model");
 const Course = require("../Models/Course.model");
+const SubSection = require("../Models/SubSection.model");
 
+// CREATE a new section
 exports.createSection = async (req, res) => {
   try {
     const { sectionName, courseId } = req.body;
 
-    //remaining also validate for instructor that same instructor has created that course
     if (!sectionName || !courseId) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "Missing required properties",
       });
     }
-    let course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Course id",
-      });
-    }
-    //creating section
-    const section = await Section.create({
-      sectionName,
-      course: course._id,
-    });
-    //update course
-    course = await course
-      .updateOne(
-        {
-          $push: {
-            courseContent: section._id,
-          },
-        },
-        { new: true }
-      )
-      .populate("courseContent")
-      .exec();
-    course = await course.save();
 
-    return res.status(201).json({
+    const newSection = await Section.create({ sectionName });
+
+    const updatedCourse = await Course.findByIdAndUpdate(
+      courseId,
+      { $push: { courseContent: newSection._id } },
+      { new: true }
+    )
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .exec();
+
+    res.status(200).json({
       success: true,
-      message: "New section created Successfully",
-      updatedCourse: course,
+      message: "Section created successfully",
+      updatedCourse,
     });
   } catch (error) {
-    console.log("error in creating section ", error);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
-      message: "internel server error",
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
 
+// UPDATE a section
+exports.updateSection = async (req, res) => {
+  try {
+    const { sectionName, sectionId, courseId } = req.body;
+    await Section.findByIdAndUpdate(
+      sectionId,
+      { sectionName },
+      { new: true }
+    );
+
+    const course = await Course.findById(courseId)
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      message: "Section updated successfully",
+      data: course,
+    });
+  } catch (error) {
+    console.error("Error updating section:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// DELETE a section
 exports.deleteSection = async (req, res) => {
   try {
-    const { sectionId } = req.body;
+    const { sectionId, courseId } = req.body;
+    await Course.findByIdAndUpdate(courseId, {
+      $pull: { courseContent: sectionId },
+    });
 
-    if (!sectionId) {
-      return res.status(401).json({
+    const section = await Section.findById(sectionId);
+    if (!section) {
+      return res.status(404).json({
         success: false,
-        message: "All fields are required",
+        message: "Section not Found",
       });
     }
 
+    // delete sub sections
+    await SubSection.deleteMany({ _id: { $in: section.subSection } });
     await Section.findByIdAndDelete(sectionId);
-    return res.status(200).json({
-      message: "section deleted successfully",
+
+    const course = await Course.findById(courseId)
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .exec();
+
+    res.status(200).json({
       success: true,
+      message: "Section deleted",
+      data: course,
     });
   } catch (error) {
-    console.log("error in deleting section", error);
-    return res.status(500).json({
-      message: "internel server error",
+    console.error("Error deleting section:", error);
+    res.status(500).json({
       success: false,
+      message: "Internal server error",
     });
   }
 };

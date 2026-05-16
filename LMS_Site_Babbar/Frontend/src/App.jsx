@@ -26,6 +26,11 @@ import MyCourses from "./Components/Core/Dashboard/MyCourses";
 import AddCourse from "./Components/Core/Dashboard/AddCourse/index";
 import { getUserDetails } from "./services/APIS/profile";
 import { setLoading } from "./slices/auth.slice";
+import Catalog from "./Pages/Catalog";
+import CourseDetails from "./Pages/CourseDetails";
+import ViewCourse from "./Pages/ViewCourse";
+import VideoDetails from "./Components/Core/ViewCourse/VideoDetails";
+import PaymentSuccess from "./Pages/PaymentSuccess";
 
 function App() {
   const loading = useSelector((store) => store.auth.loading);
@@ -103,6 +108,9 @@ function App() {
           />
 
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/catalog/:catalogName" element={<Catalog />} />
+          <Route path="/courses/:courseId" element={<CourseDetails />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route
             element={
               <PrivateRoute>
@@ -124,6 +132,21 @@ function App() {
             />
             <Route path="/dashboard/my-courses" element={<MyCourses />} />
             <Route path="/dashboard/add-course" element={<AddCourse />} />
+          </Route>
+
+          <Route
+            element={
+              <PrivateRoute>
+                <ViewCourse />
+              </PrivateRoute>
+            }
+          >
+            {user?.accountType === "Student" && (
+              <Route
+                path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+                element={<VideoDetails />}
+              />
+            )}
           </Route>
 
           <Route path="*" element={<Error />} />

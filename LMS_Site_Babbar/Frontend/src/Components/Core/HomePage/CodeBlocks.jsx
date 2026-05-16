@@ -15,9 +15,9 @@ const CodeBlocks = ({
 }) => {
   return (
     <div
-      className={`flex  flex-col md:flex-row ${direction}  my-20 items-center lg:justify-between lg:-translate-x-0 md:justify-center -translate-x-10 gap-20 mt-20 `}
+      className={`flex flex-col lg:flex-row ${direction} my-20 items-center justify-between gap-10 lg:gap-20`}
     >
-      <div className="flex flex-col w-[50%] gap-8 ">
+      <div className="flex flex-col w-full lg:w-[50%] gap-8">
         <div className="lg:text-4xl md:text-3xl font-semibold">
           {heading1.before} <HighlightText text={heading1.highlighted} />
           {heading1.after}
@@ -36,7 +36,7 @@ const CodeBlocks = ({
         </div>
       </div>
 
-      <div className="flex w-[50%] relative text-[10px] lg:text-[15px] shadow-2xl bg-[#050c15] p-10 rounded-xl opacity-100 font-medium">
+      <div className="flex w-full lg:w-[50%] relative text-[10px] lg:text-[15px] shadow-2xl bg-[#050c15] p-6 lg:p-10 rounded-xl opacity-100 font-medium overflow-x-hidden">
         {bgGradient}
         <div className="flex flex-col text-center w-[10%] text-richblack-400 font-inter ">
           <p>1</p>

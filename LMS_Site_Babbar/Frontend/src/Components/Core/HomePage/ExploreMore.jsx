@@ -33,7 +33,7 @@ const ExploreMore = () => {
       <div className="text-richblack-400">
         Learn To Build Anything. You Can imagine
       </div>
-      <div className="flex h-fit items-center justify-between lg:p-2  w-[90vw] mx-2 sm:w-fit rounded-full bg-richblack-800 text-richblack-100">
+      <div className="flex flex-wrap h-fit items-center justify-center lg:justify-between lg:p-2 w-[90%] md:w-[90vw] lg:w-fit rounded-full bg-richblack-800 text-richblack-100 mt-5">
         {tabsName.map((tab, id) => {
           return (
             <div
@@ -50,7 +50,7 @@ const ExploreMore = () => {
           );
         })}
       </div>
-      <div className="flex gap-10 lg:flex-row flex-col w-[300px] lg:w-fit lg:translate-y-[30%] ">
+      <div className="flex gap-10 lg:flex-row flex-col w-full lg:w-fit lg:absolute lg:-bottom-[30%] lg:translate-y-[50%] mt-8 lg:mt-0 px-4 lg:px-0 justify-center">
         {courses.map((course, id) => (
           <CourseCard
             key={id}

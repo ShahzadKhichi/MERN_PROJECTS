@@ -19,8 +19,8 @@ const Dashboard = () => {
   useOnClickOutside(cmRef, () => setCm(false));
 
   return (
-    <div className="flex w-full min-h-screen">
-      <div className="w-[300px]  text-white ">
+    <div className="flex flex-col md:flex-row w-full min-h-screen">
+      <div className="w-full md:w-[300px] text-white">
         <SideBar setLogoutCm={setCm} />
       </div>
       <div className="w-full relative">

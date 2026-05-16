@@ -5,56 +5,77 @@ const {
   isInstructor,
   isStudent,
 } = require("../Middleware/auth.middleware");
+
+// Course Controllers
 const {
   createCourse,
+  getAllCourses,
   getCourseDetails,
-  showAllCourses,
+  getFullCourseDetails,
+  editCourse,
+  getInstructorCourses,
+  deleteCourse,
 } = require("../Controllers/Course.controller");
+
+// Category Controllers
 const {
-  createCategory,
   showAllCategories,
+  createCategory,
+  categoryPageDetails,
 } = require("../Controllers/Category.controller");
-const {
-  createRating,
-  getAllRatings,
-  getAverageRating,
-} = require("../Controllers/RatingAndReviews.controller");
+
+// Section Controllers
 const {
   createSection,
+  updateSection,
   deleteSection,
 } = require("../Controllers/Section.controller");
+
+// SubSection Controllers
 const {
   createSubSection,
   updateSubSection,
   deleteSubSection,
 } = require("../Controllers/SubSection.controller");
 
-// course methods
+// Rating Controllers
+const {
+  createRating,
+  getAverageRating,
+  getAllRatings,
+} = require("../Controllers/RatingAndReviews.controller");
 
-router.post("/create-course", auth, isInstructor, createCourse);
-router.get("/course-details", auth, getCourseDetails);
-router.get("/show-all-courses", showAllCourses);
+// Course Progress
+const {
+  updateCourseProgress,
+} = require("../Controllers/CourseProgress.controller");
 
-// category methods
+// ================== Course Routes ==================
+router.post("/createCourse", auth, isInstructor, createCourse);
+router.post("/addSection", auth, isInstructor, createSection);
+router.post("/updateSection", auth, isInstructor, updateSection);
+router.post("/deleteSection", auth, isInstructor, deleteSection);
+router.post("/updateSubSection", auth, isInstructor, updateSubSection);
+router.post("/deleteSubSection", auth, isInstructor, deleteSubSection);
+router.post("/addSubSection", auth, isInstructor, createSubSection);
+router.get("/getAllCourses", getAllCourses);
+router.post("/getCourseDetails", getCourseDetails);
+router.post("/getFullCourseDetails", auth, getFullCourseDetails);
+router.post("/editCourse", auth, isInstructor, editCourse);
+router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
+router.delete("/deleteCourse", deleteCourse);
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
-router.post("/create-category", auth, isAdmin, createCategory);
+// ================== Category Routes ==================
+router.post("/createCategory", auth, isAdmin, createCategory);
+router.get("/showAllCategories", showAllCategories);
+// backward compat alias
 router.get("/getAllCategory", showAllCategories);
+router.post("/getCategoryPageDetails", categoryPageDetails);
 
-// rating and reviews methods
-
-router.post("/create-rating", auth, isStudent, createRating);
-router.get("/avergae-rating", getAverageRating);
-router.get("/all-ratings", getAllRatings);
-
-// sections methods
-
-router.post("/create-section", auth, isInstructor, createSection);
-router.delete("/delete-section", auth, isInstructor, deleteSection);
-
-// subsection methods
-
-router.post("/create-subsection", auth, isInstructor, createSubSection);
-router.delete("/delete-subsection", auth, isInstructor, deleteSection);
-router.put("/update-subsection", auth, isInstructor, updateSubSection);
+// ================== Rating and Review ==================
+router.post("/createRating", auth, isStudent, createRating);
+router.get("/getAverageRating", getAverageRating);
+router.get("/getReviews", getAllRatings);
 
 module.exports = router;

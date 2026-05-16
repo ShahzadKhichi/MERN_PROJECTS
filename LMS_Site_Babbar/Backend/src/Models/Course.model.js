@@ -2,23 +2,12 @@ const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema(
   {
-    courseName: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    courseDescription: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    WhatYouWillLearn: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    instrutor: {
+    courseName: { type: String, trim: true, required: true },
+    courseDescription: { type: String, trim: true, required: true },
+    whatYouWillLearn: { type: String, trim: true },
+    instructor: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: "User",
     },
     courseContent: [
@@ -34,25 +23,25 @@ const courseSchema = new mongoose.Schema(
       },
     ],
     price: { type: Number, required: true },
-    thumnail: {
-      type: String,
-      required: true,
-    },
+    thumbnail: { type: String },
+    tag: { type: [String] },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
     },
-    tags: {
-      type: [String],
-    },
-    studentsEnRolled: [
+    studentsEnroled: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
+    instructions: { type: [String] },
+    status: {
+      type: String,
+      enum: ["Draft", "Published"],
+      default: "Draft",
+    },
   },
-
   { timestamps: true }
 );
 

@@ -18,13 +18,13 @@ const About = () => {
           Driving innovation in Online Educatoin for a
           <HighlightText text={"Brighter Future"}></HighlightText>
         </div>
-        <div className=" text-richblack-200 font-inter w-[43%] text-center">
+        <div className=" text-richblack-200 font-inter w-[90%] md:w-[43%] text-center">
           Studynotion is at the forefront of driving innovation in online
           education. We're passionate about creating a brighter future by
           offering cutting-edge courses, leveraging emerging technologies, and
           nurturing a vibrant learning community.
         </div>
-        <div className="flex gap-8 absolute  -bottom-28">
+        <div className="hidden md:flex gap-8 absolute -bottom-28">
           <img src={BannerImage1} alt="" className="rounded" />
           <img src={BannerImage2} alt="" className="rounded" />
           <img src={BannerImage3} alt="" className="rounded" />
@@ -32,7 +32,7 @@ const About = () => {
       </section>
       {/* section 2 */}
       <section className="w-11/12 mx-auto  mt-32 gap-4 flex flex-col items-center  ">
-        <div className=" text-xl md:text-4xl font-semibold mx-auto py-5 pb-20 text-center w-[70%] text-white">
+        <div className=" text-xl md:text-4xl font-semibold mx-auto py-5 pb-20 text-center w-[90%] md:w-[70%] text-white">
           We are passionate about revolutionizing the way we learn. Our
           innovative platform <HighlightText text={"combines technology"} />,{" "}
           <span className="bg-gradient-to-b from-[#FF512F] to-[#F09819] text-transparent bg-clip-text font-bold">

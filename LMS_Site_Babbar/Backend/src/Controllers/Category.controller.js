@@ -1,51 +1,45 @@
 const Category = require("../Models/Category.model");
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 exports.createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
-
-    if (!name || !description) {
-      return res.status(401).json({
-        success: false,
-        message: "All fields are requried",
-      });
+    if (!name) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
+    const CategoryDetails = await Category.create({
+      name,
+      description,
+    });
 
-    const category = await Category.create({ name, description });
-
-    return res.status(201).json({
-      category,
+    return res.status(200).json({
       success: true,
-      message: "Category created successfully",
+      message: "Category Created Successfully",
     });
   } catch (error) {
-    console.log("error in creating Category", error);
-
     return res.status(500).json({
       success: false,
-      messsage: "internel server error",
+      message: error.message,
     });
   }
 };
 
 exports.showAllCategories = async (req, res) => {
   try {
-    const Categories = await Category.find(
-      {},
-      { name: true, description: true }
-    );
-
-    return res.status(200).json({
-      Categories,
+    const allCategories = await Category.find({});
+    res.status(200).json({
       success: true,
-      message: "Categories get successfully",
+      Categories: allCategories,
     });
   } catch (error) {
-    console.log("error in creating Category", error);
-
     return res.status(500).json({
       success: false,
-      messsage: "internel server error",
+      message: error.message,
     });
   }
 };
@@ -54,41 +48,74 @@ exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
 
-    if (!categoryId) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are requried",
-      });
+    // Get courses for the specified category
+    const selectedCategory = await Category.findById(categoryId)
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: "ratingAndReviews",
+      })
+      .exec();
+
+    if (!selectedCategory) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
     }
 
-    const selectedCourses = await Category.findById(categoryId)
-      .populate("course")
-      .exec();
-
-    const differentCourses = await Category.findById({
-      _id: { $ne: categoryId },
-    })
-      .populate("course")
-      .exec();
-
-    if (!selectedCourses) {
+    if (selectedCategory.courses.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "category not found",
+        message: "No courses found for the selected category.",
       });
     }
 
-    return res.status(200).json({
+    // Get courses for other categories
+    const categoriesExceptSelected = await Category.find({
+      _id: { $ne: categoryId },
+    });
+
+    let differentCategory = null;
+    if (categoriesExceptSelected.length > 0) {
+      differentCategory = await Category.findById(
+        categoriesExceptSelected[
+          getRandomInt(categoriesExceptSelected.length)
+        ]._id
+      )
+        .populate({
+          path: "courses",
+          match: { status: "Published" },
+        })
+        .exec();
+    }
+
+    // Get top-selling courses
+    const allCategories = await Category.find()
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: { path: "instructor" },
+      })
+      .exec();
+
+    const allCourses = allCategories.flatMap((category) => category.courses);
+    const mostSellingCourses = allCourses
+      .sort((a, b) => (b.studentsEnroled?.length || 0) - (a.studentsEnroled?.length || 0))
+      .slice(0, 10);
+
+    res.status(200).json({
       success: true,
-      message: "detials get successfully",
-      selectedCourses,
-      differentCourses,
+      data: {
+        selectedCategory,
+        differentCategory,
+        mostSellingCourses,
+      },
     });
   } catch (error) {
-    console.log("Error in category page details", error);
     return res.status(500).json({
       success: false,
-      message: "internel server error",
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };

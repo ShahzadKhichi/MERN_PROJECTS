@@ -1,169 +1,248 @@
 const Profile = require("../Models/Profile.model");
-const User = require("../Models/User.model");
+const CourseProgress = require("../Models/CourseProgress.model");
 const Course = require("../Models/Course.model");
-const { uploadImage, deleteOldImage } = require("../utils/imageUploader");
-const fs = require("fs/promises");
+const User = require("../Models/User.model");
+const { uploadImage } = require("../utils/imageUploader");
+const mongoose = require("mongoose");
+const { convertSecondsToDuration } = require("../utils/secToDuration");
+
+// Update Profile
 exports.updateProfile = async (req, res) => {
   try {
-    const { gender, dateOfBirth = "", contactNumber, about = "" } = req.body;
-    const userId = req.user.id;
+    const {
+      firstName = "",
+      lastName = "",
+      dateOfBirth = "",
+      about = "",
+      contactNumber = "",
+      gender = "",
+    } = req.body;
+    const id = req.user.id;
 
-    //validation
-    if (!gender || !contactNumber) {
-      return res.statu(401).json({
-        success: false,
-        message: "gender and contact number are requried fields",
-      });
-    }
+    const userDetails = await User.findById(id);
+    const profile = await Profile.findById(userDetails.additionalDetails);
 
-    const user = await User.findById(userId)
-      .populate("additionalDetails")
-      .exec();
-
-    if (!user) {
-      return res.statu(401).json({
-        success: false,
-        message: "unauthorized access ",
-      });
-    }
-    //updating details
-    user.additionalDetails.gender = gender;
-    user.additionalDetails.about = about;
-    user.additionalDetails.contactNumber = contactNumber;
-    user.additionalDetails.dateOfBirth = dateOfBirth;
-
+    const user = await User.findByIdAndUpdate(id, {
+      firstName,
+      lastName,
+    });
     await user.save();
 
-    return res.status(200).json({
-      message: "profile updated successfully",
-      success: true,
-      updatedUser: user,
-    });
-  } catch (error) {
-    console.log("error in updating profile", error);
-    return res.status(500).json({
-      success: false,
-      message: "internel server error",
-    });
-  }
-};
+    profile.dateOfBirth = dateOfBirth;
+    profile.about = about;
+    profile.contactNumber = contactNumber;
+    profile.gender = gender;
+    await profile.save();
 
-exports.deleteAccount = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    if (!userId) {
-      return res.status(403).json({
-        success: false,
-        message: "Unauthorized access",
-      });
-    }
-
-    const user = await User.findById(userId);
-    await Profile.findByIdAndDelete(user.additionalDetails);
-    await user.deleteOne();
-    return res.status(200).json({
-      success: true,
-      message: "Account deleted successfully",
-    });
-  } catch (error) {
-    console.log("error in deleting accoutn", error);
-    return res.status(500).json({
-      success: false,
-      message: "Message internel server error",
-    });
-  }
-};
-
-exports.getAllUserDetails = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    if (!userId) {
-      return res.status(403).json({
-        success: false,
-        message: "Unauthorized access",
-      });
-    }
-
-    const user = await User.findById(userId)
-      .select("-password")
+    const updatedUserDetails = await User.findById(id)
       .populate("additionalDetails")
       .exec();
 
-    return res.status(200).json({
+    return res.json({
       success: true,
-      message: "get details successfully",
-      user,
+      message: "Profile updated successfully",
+      updatedUserDetails,
     });
   } catch (error) {
-    console.log("error in geting all user details", error);
+    console.log(error);
     return res.status(500).json({
       success: false,
-      message: "internel server error",
+      error: error.message,
     });
   }
 };
 
-exports.updateProfilePicture = async (req, res) => {
+// Delete Account
+exports.deleteAccount = async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    const picture = req.files?.picture;
-
-    if (!userId || !picture) {
-      return res.status(401).json({
+    const id = req.user.id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "All fields are requried",
+        message: "User not found",
       });
     }
 
-    const updatedUser = await User.findById(userId);
+    // Delete Associated Profile
+    await Profile.findByIdAndDelete(
+      new mongoose.Types.ObjectId(user.additionalDetails)
+    );
 
-    const imageUrl = (await uploadImage(picture, process.env.FOLDER))
-      .secure_url;
-    if (updatedUser?.imageUrl.includes("cloudinary") != -1) {
-      await deleteOldImage(updatedUser.imageUrl);
-      console.log("old deleted");
+    // Unenroll from courses
+    for (const courseId of user.courses) {
+      await Course.findByIdAndUpdate(
+        courseId,
+        { $pull: { studentsEnroled: id } },
+        { new: true }
+      );
     }
 
-    updatedUser.imageUrl = imageUrl;
-    await updatedUser.save();
-    return res.status(200).json({
+    // Delete User
+    await User.findByIdAndDelete(id);
+    await CourseProgress.deleteMany({ userId: id });
+
+    res.status(200).json({
       success: true,
-      message: "image updated successfully",
-      updatedUser,
+      message: "User deleted successfully",
     });
   } catch (error) {
-    console.log("error in updating profile picture", error);
+    console.log(error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "User Cannot be deleted successfully",
+      });
+  }
+};
+
+// Get All User Details
+exports.getAllUserDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const userDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      message: "User Data fetched successfully",
+      user: userDetails,
+    });
+  } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "internel server error",
+      message: error.message,
     });
   }
 };
 
+// Update Display Picture
+exports.updateProfilePicture = async (req, res) => {
+  try {
+    const displayPicture = req.files.displayPicture;
+    const userId = req.user.id;
+    const image = await uploadImage(
+      displayPicture,
+      process.env.FOLDER,
+      1000,
+      1000
+    );
+
+    const updatedProfile = await User.findByIdAndUpdate(
+      userId,
+      { image: image.secure_url },
+      { new: true }
+    );
+
+    res.send({
+      success: true,
+      message: `Image Updated successfully`,
+      data: updatedProfile,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get Enrolled Courses
 exports.getUserEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
-    const userDetails = await User.findById(userId).populate("courses").exec();
+    let userDetails = await User.findOne({ _id: userId })
+      .populate({
+        path: "courses",
+        populate: {
+          path: "courseContent",
+          populate: { path: "subSection" },
+        },
+      })
+      .exec();
+
+    userDetails = userDetails.toObject();
+    var SubsectionLength = 0;
+
+    for (var i = 0; i < userDetails.courses.length; i++) {
+      let totalDurationInSeconds = 0;
+      SubsectionLength = 0;
+      for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+        totalDurationInSeconds += userDetails.courses[i].courseContent[
+          j
+        ].subSection.reduce(
+          (acc, curr) => acc + parseInt(curr.timeDuration || 0),
+          0
+        );
+        userDetails.courses[i].totalDuration = convertSecondsToDuration(
+          totalDurationInSeconds
+        );
+        SubsectionLength +=
+          userDetails.courses[i].courseContent[j].subSection.length;
+      }
+
+      let courseProgressCount = await CourseProgress.findOne({
+        courseID: userDetails.courses[i]._id,
+        userId: userId,
+      });
+
+      courseProgressCount = courseProgressCount?.completedVideos.length || 0;
+
+      if (SubsectionLength === 0) {
+        userDetails.courses[i].progressPercentage = 100;
+      } else {
+        const multiplier = Math.pow(10, 2);
+        userDetails.courses[i].progressPercentage =
+          Math.round(
+            (courseProgressCount / SubsectionLength) * 100 * multiplier
+          ) / multiplier;
+      }
+    }
 
     if (!userDetails) {
       return res.status(400).json({
-        message: "user not found",
         success: false,
+        message: `Could not find user`,
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "user detailes",
-      data: userDetails.courses || [],
+      data: userDetails.courses,
     });
   } catch (error) {
     return res.status(500).json({
-      message: "internel server error",
       success: false,
+      message: error.message,
     });
+  }
+};
+
+// Instructor Dashboard
+exports.instructorDashboard = async (req, res) => {
+  try {
+    const courseDetails = await Course.find({ instructor: req.user.id });
+
+    const courseData = courseDetails.map((course) => {
+      const totalStudentsEnrolled = course.studentsEnroled.length;
+      const totalAmountGenerated = totalStudentsEnrolled * course.price;
+
+      const courseDataWithStats = {
+        _id: course._id,
+        courseName: course.courseName,
+        courseDescription: course.courseDescription,
+        totalStudentsEnrolled,
+        totalAmountGenerated,
+      };
+
+      return courseDataWithStats;
+    });
+
+    res.status(200).json({ courses: courseData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
 };

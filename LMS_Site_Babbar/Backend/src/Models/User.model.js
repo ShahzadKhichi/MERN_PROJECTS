@@ -30,21 +30,30 @@ const userSchema = new mongoose.Schema(
       required: true,
       enum: ["Admin", "Instructor", "Student"],
     },
-
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    approved: {
+      type: Boolean,
+      default: true,
+    },
     additionalDetails: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Profile",
     },
-    courses: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
-    },
+    courses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
     token: { type: String },
-    restTokenExpires: { type: Number },
-    imageUrl: {
+    resetPasswordExpires: { type: Date },
+    image: {
       type: String,
-      required: true,
+      default: "",
     },
     courseProgress: [
       { type: mongoose.Schema.Types.ObjectId, ref: "CourseProgress" },
@@ -54,6 +63,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
@@ -67,8 +77,10 @@ userSchema.methods.generateToken = function () {
     {
       id: this._id,
       email: this.email,
+      accountType: this.accountType,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
+    { expiresIn: "24h" }
   );
   return token;
 };

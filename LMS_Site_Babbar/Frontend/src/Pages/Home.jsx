@@ -10,6 +10,7 @@ import LearningLanguageSection from "../Components/Core/HomePage/LearningLanguag
 import InstructorSection from "../Components/Core/HomePage/InstructorSection";
 import Footer from "../Components/Common/Footer";
 import ExploreMore from "../Components/Core/HomePage/ExploreMore";
+import ReviewSlider from "../Components/Common/ReviewSlider";
 const Home = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -27,7 +28,7 @@ const Home = () => {
             Empower Your Future with
             <HighlightText text={" Coding Skills"}></HighlightText>
           </div>
-          <p className="w-[60%] text-center text-lg font-bold text-richblack-300">
+          <p className="w-[90%] md:w-[60%] text-center text-lg font-bold text-richblack-300">
             With our online coding courses,you can learn at your own pace, from
             anywhere in the world, and get access to a wealth of resources,
             including hands-on projects, quizzes, and personalized feedback from
@@ -39,7 +40,7 @@ const Home = () => {
             </CTAButton>
             <CTAButton>Book a Demo</CTAButton>
           </div>
-          <div className=" w-[75%]   drop-shadow-2xl shadow-2xl  shadow-blue-100  ">
+          <div className=" w-full md:w-[75%]   drop-shadow-2xl shadow-2xl  shadow-blue-100  ">
             <div className=" w-[100%] bg-white  rounded-md ">
               <video
                 src={bannerVideo}
@@ -53,7 +54,7 @@ const Home = () => {
         </div>
 
         {/* code section 1 */}
-        <div className="w-[75%]  mt-20">
+        <div className="w-full md:w-[75%]  mt-20">
           <CodeBlocks
             heading1={{
               before: "Unlock Your",
@@ -107,11 +108,11 @@ const Home = () => {
         </div>
         <div className="mx-auto w-11/12 max-w-maxContent  flex flex-col justify-center items-center lg:justify-between gap-7">
           <div className="flex lg:flex-row flex-col  items-center lg:items-start  gap-10 my-20">
-            <div className="w-[50%] text-4xl font-inter font-bold">
+            <div className="w-full lg:w-[50%] text-4xl font-inter font-bold">
               Get the skills you need for a{" "}
               <HighlightText text={"job that is in demand"} />
             </div>
-            <div className="w-[50%] flex flex-col gap-10 ">
+            <div className="w-full lg:w-[50%] flex flex-col gap-10 ">
               <div className="text-[16px]">
                 The modern StudyNotion is the dictates its own terms. Today, to
                 be a competitive specialist requires more than professional
@@ -134,8 +135,9 @@ const Home = () => {
         <h2 className="text-center  text-4xl font-semibold mt-10">
           Review from other learners
         </h2>
-        <div className="h-[40vh]"></div>
-        {/* review slider */}
+        <div className="w-full">
+          <ReviewSlider />
+        </div>
       </section>
       {/* footer */}
 
